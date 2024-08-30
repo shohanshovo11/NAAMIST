@@ -25,7 +25,7 @@ const Login = () => {
         },
         userState: {
           id: user?._id,
-          role: user?.role,
+          role: role,
           token: token
         }
       });
@@ -34,9 +34,9 @@ const Login = () => {
         console.log('Successfully signed in!');
         // Navigate based on role
         if (role === 'alumni') {
-          navigate('/alumni-dashboard');
-        } else if (role === 'admin') {
-          navigate('/admin-dashboard');
+          navigate('/dashboard');
+        } else{
+          navigate('/login');
         }
       } else {
         console.error('Failed to sign in.');
