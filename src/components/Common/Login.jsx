@@ -12,11 +12,10 @@ const Login = () => {
   const loginHandler = async () => {
     try {
       // Make the POST request to login
-      const response = await Axios.post('/auth/login', { email, password });
+      const response = await Axios.post('/auth/login', { email, password, role: 'alumni' });
 
       // Extract token and role from response
-      const { token, role, alumni } = response.data;
-      // console.log('Token:', token, 'Role:', role, 'Alumni:', alumni);
+      const { token, role, user } = response.data;
       // Use `signIn` to store the token in a cookie
       const success = signIn({
         token,
@@ -25,8 +24,8 @@ const Login = () => {
           type: 'Bearer',
         },
         userState: {
-          id: alumni?._id,
-          role: alumni?.role,
+          id: user?._id,
+          role: user?.role,
           token: token
         }
       });
