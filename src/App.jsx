@@ -20,7 +20,7 @@ function App() {
             </Layout>
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route path="/authentication" element={<Login />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/members"

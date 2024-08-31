@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -13,14 +13,22 @@ const pages = [
 
 function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activePage, setActivePage] = useState(location.pathname);
   const isAuthenticated = useIsAuthenticated();
   const signOut = useSignOut();
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated);
 
   const handleLogout = () => {
     signOut(); // Perform the logout action
-    setActivePage("/"); // Optionally, redirect to the home page or any other page
+    setIsLoggedIn(false); // Update the authentication state
+    navigate("/"); // Optionally, redirect to the home page or any other page
   };
+
+  useEffect(() => {
+    setActivePage(location.pathname); // Update the active page when the location changes
+    setIsLoggedIn(isAuthenticated); // Update the logged-in state when the component mounts or changes
+  }, [location, isAuthenticated]);
 
   return (
     <nav className="text-black p-4 max-w-screen-xl mx-auto">
@@ -52,7 +60,7 @@ function Navbar() {
             </Link>
           ))}
 
-          {isAuthenticated ? (
+          {isLoggedIn ? (
             <button
               onClick={handleLogout}
               className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-md shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
