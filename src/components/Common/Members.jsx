@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { Table, Avatar } from "antd";
+import HeroSection from "./HeroSection";
 
 // Demo Data
 const allMembers = [
@@ -43,23 +44,6 @@ const executiveMembers = [
     linkedin: "#",
   },
 ];
-
-// Hero Section Component
-const HeroSection = ({ title }) => {
-  return (
-    <div
-      className="w-full h-48 bg-cover bg-center relative flex items-center justify-center"
-      style={{
-        backgroundImage: `url('https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
-      }}
-    >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      {/* Content */}
-      <h1 className="relative text-4xl font-bold text-white">{title}</h1>
-    </div>
-  );
-};
 
 // Filters Component
 const Filters = ({
@@ -254,9 +238,19 @@ const Members = () => {
   return (
     <div className="w-full">
       {filter === "executive" ? (
-        <HeroSection title={"Panel Members"} />
+        <HeroSection
+          title={"Panel Members"}
+          imageUrl={
+            "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          }
+        />
       ) : (
-        <HeroSection title={"All Members"} />
+        <HeroSection
+          title={"All Members"}
+          imageUrl={
+            "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          }
+        />
       )}
       <div className="max-w-screen-xl mx-auto p-4">
         <Filters

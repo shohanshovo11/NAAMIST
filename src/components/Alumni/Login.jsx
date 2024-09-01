@@ -108,7 +108,7 @@ const Login = () => {
           onClick={() => navigate("/")}
           className="absolute bottom-4 left-4 bg-primary text-white px-6 py-2 rounded-full hover:bg-black transition duration-300"
         >
-          Visit Us
+          Go Back
         </button>
       </div>
 

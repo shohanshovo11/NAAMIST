@@ -1,0 +1,52 @@
+import { Card } from "antd";
+import { IoIosArrowForward } from "react-icons/io";
+import { format } from "date-fns";
+import { CiCalendar } from "react-icons/ci";
+
+const { Meta } = Card;
+
+// EventCard Component
+const EventCard = ({ imageUrl, title, description, eventDate }) => {
+  // Format the date object to a readable string
+  const formattedDate = format(new Date(eventDate), "MMMM d, yyyy");
+
+  return (
+    <Card
+      cover={
+        <img
+          alt={title}
+          src={imageUrl}
+          style={{ height: "200px", objectFit: "cover" }}
+        />
+      }
+      className="p-4 bg-white shadow-lg rounded-lg"
+    >
+      <div className="pb-2 border-b border-gray-200">
+        <Meta
+          title={title}
+          description={
+            <p className="text-gray-600">
+              {description.length > 100
+                ? description.substring(0, 100) + "..."
+                : description}
+            </p>
+          }
+        />
+      </div>
+      <div className="py-4">
+        <div className="flex items-center text-gray-600">
+          <CiCalendar size={22} />
+          <span className="ml-2">{formattedDate}</span>
+        </div>
+      </div>
+      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+        <span className="text-primary font-semibold cursor-pointer">
+          Read More
+        </span>
+        <IoIosArrowForward className="text-primary text-xl" />
+      </div>
+    </Card>
+  );
+};
+
+export default EventCard;

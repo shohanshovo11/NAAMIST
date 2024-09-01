@@ -8,6 +8,7 @@ import Login from "./components/Alumni/Login";
 import AdminLogin from "./components/Admin/AdminLogin";
 import Layout from "./components/Common/Layout";
 import Members from "./components/Common/Members";
+import Events from "./components/Events/Events";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
           path="/events"
           element={
             <Layout>
-              <Home />
+              <Events />
             </Layout>
           }
         />
