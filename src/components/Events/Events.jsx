@@ -1,8 +1,10 @@
+import { useState } from "react";
 import HeroSection from "../Common/HeroSection";
 import EventCard from "./EventCard";
 
 const events = [
   {
+    _id: "1",
     imageUrl:
       "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
     title: "Tech Conference 2024",
@@ -11,6 +13,7 @@ const events = [
     eventDate: "2024-10-05T09:00:00Z",
   },
   {
+    _id: "2",
     imageUrl:
       "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
     title: "Art Exhibition Opening",
@@ -19,6 +22,7 @@ const events = [
     eventDate: "2024-09-20T18:00:00Z",
   },
   {
+    _id: "3",
     imageUrl:
       "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
     title: "Fitness Workshop",
@@ -27,6 +31,7 @@ const events = [
     eventDate: "2024-11-15T11:00:00Z",
   },
   {
+    _id: "4",
     imageUrl:
       "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
     title: "Cooking Class: Italian Cuisine",
@@ -35,6 +40,52 @@ const events = [
     eventDate: "2024-12-01T14:00:00Z",
   },
   {
+    _id: "5",
+    imageUrl:
+      "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
+    title: "Music Festival",
+    description:
+      "Experience a weekend of live music at our annual music festival. Featuring performances from top bands and artists across various genres.",
+    eventDate: "2024-10-25T16:00:00Z",
+  },
+  {
+    _id: "1",
+    imageUrl:
+      "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
+    title: "Tech Conference 2024",
+    description:
+      "Join us for the annual Tech Conference where industry leaders discuss the latest trends in technology. Don't miss out on insightful talks and networking opportunities.",
+    eventDate: "2024-10-05T09:00:00Z",
+  },
+  {
+    _id: "2",
+    imageUrl:
+      "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
+    title: "Art Exhibition Opening",
+    description:
+      "Explore the new art exhibition featuring contemporary artists from around the world. The opening night includes a reception with the artists and live music.",
+    eventDate: "2024-09-20T18:00:00Z",
+  },
+  {
+    _id: "3",
+    imageUrl:
+      "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
+    title: "Fitness Workshop",
+    description:
+      "Participate in a hands-on fitness workshop with professional trainers. Learn new exercises, get tips on nutrition, and meet fellow fitness enthusiasts.",
+    eventDate: "2024-11-15T11:00:00Z",
+  },
+  {
+    _id: "4",
+    imageUrl:
+      "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
+    title: "Cooking Class: Italian Cuisine",
+    description:
+      "Join our cooking class to learn how to prepare delicious Italian dishes. This class is perfect for both beginners and experienced cooks.",
+    eventDate: "2024-12-01T14:00:00Z",
+  },
+  {
+    _id: "5",
     imageUrl:
       "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
     title: "Music Festival",
@@ -45,6 +96,40 @@ const events = [
 ];
 
 function Events() {
+  // Sort events by eventDate (most recent first)
+  const sortedEvents = events.sort(
+    (a, b) => new Date(b.eventDate) - new Date(a.eventDate)
+  );
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 6; // Updated to show 6 posts per page
+
+  // Calculate total pages
+  const totalPages = Math.ceil(sortedEvents.length / eventsPerPage);
+
+  // Get current events to display
+  const indexOfLastEvent = currentPage * eventsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
+  const currentEvents = sortedEvents.slice(indexOfFirstEvent, indexOfLastEvent);
+
+  // Pagination handlers
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
       <HeroSection
@@ -54,8 +139,9 @@ function Events() {
         title={"Events"}
       />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8 max-w-screen-xl mx-auto my-20">
-        {events.map((event, index) => (
+        {currentEvents.map((event, index) => (
           <EventCard
+            _id={event._id}
             key={index}
             imageUrl={event.imageUrl}
             title={event.title}
@@ -63,6 +149,37 @@ function Events() {
             eventDate={event.eventDate}
           />
         ))}
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center mt-8">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="px-4 py-2 mx-1 text-white bg-blue-600 rounded hover:bg-blue-800 disabled:opacity-50"
+        >
+          Prev
+        </button>
+        {Array.from({ length: totalPages }).map((_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageClick(index + 1)}
+            className={`px-4 py-2 mx-1 rounded ${
+              currentPage === index + 1
+                ? "bg-blue-800 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-700"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 mx-1 text-white bg-blue-600 rounded hover:bg-blue-800 disabled:opacity-50"
+        >
+          Next
+        </button>
       </div>
     </>
   );

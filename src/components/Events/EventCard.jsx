@@ -2,14 +2,19 @@ import { Card } from "antd";
 import { IoIosArrowForward } from "react-icons/io";
 import { format } from "date-fns";
 import { CiCalendar } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
 
 // EventCard Component
-const EventCard = ({ imageUrl, title, description, eventDate }) => {
+const EventCard = ({ _id, imageUrl, title, description, eventDate }) => {
+  const navigate = useNavigate();
+
   // Format the date object to a readable string
   const formattedDate = format(new Date(eventDate), "MMMM d, yyyy");
-
+  const handleCardClick = () => {
+    navigate(`/event/${_id}`);
+  };
   return (
     <Card
       cover={
@@ -20,6 +25,7 @@ const EventCard = ({ imageUrl, title, description, eventDate }) => {
         />
       }
       className="p-4 bg-white shadow-lg rounded-lg"
+      onClick={handleCardClick}
     >
       <div className="pb-2 border-b border-gray-200">
         <Meta

@@ -9,6 +9,7 @@ import AdminLogin from "./components/Admin/AdminLogin";
 import Layout from "./components/Common/Layout";
 import Members from "./components/Common/Members";
 import Events from "./components/Events/Events";
+import EventExpanded from "./components/Events/EventExpanded";
 
 function App() {
   return (
@@ -53,6 +54,14 @@ function App() {
           element={
             <Layout>
               <Home />
+            </Layout>
+          }
+        />
+        <Route
+          path="/event/:id"
+          element={
+            <Layout>
+              <EventExpanded />
             </Layout>
           }
         />
