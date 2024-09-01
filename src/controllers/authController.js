@@ -9,7 +9,7 @@ const generateToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET, { e
 // Alumni Registration
 const registerAlumni = async (req, res) => {
   const {
-    name, email, password, graduationYear
+    name, email, password, enrollmentYear, completionYear, studentID, batch, mobile, workplace, designation, facebook, linkedin, 
   } = req.body;
   try {
     const existingAlumni = await Alumni.findOne({ email });
@@ -17,12 +17,20 @@ const registerAlumni = async (req, res) => {
       return res.status(400).json({ message: 'Email already registered' });
     }
     const newAlumni = new Alumni({
-      name,
-      email,
-      password,
-      graduationYear,
+      name, 
+      email, 
+      password, 
+      enrollmentYear, 
+      completionYear, 
+      studentID, 
+      batch, 
+      mobile, 
+      workplace, 
+      designation, 
+      facebook, 
+      linkedin,
     });
-    await newAlumni.save();
+    const x = await newAlumni.save();
     const savedAlumni = newAlumni.toObject();
     delete savedAlumni.password;
     res
