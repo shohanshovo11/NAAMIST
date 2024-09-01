@@ -22,6 +22,7 @@ const Login = () => {
   const [designation, setDesignation] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
+  const [workSector, setWorkSector] = useState(""); // New Work Sector state
   const signIn = useSignIn();
   const navigate = useNavigate();
 
@@ -46,6 +47,7 @@ const Login = () => {
           designation,
           facebookLink,
           linkedinLink,
+          workSector, // Include workSector in the registration data
           role: "alumni",
         });
         console.log("Registration successful:", response.data);
@@ -73,7 +75,7 @@ const Login = () => {
 
         if (success) {
           console.log("Successfully signed in!");
-          navigate("/dashboard");
+          navigate("/");
         } else {
           console.error("Failed to sign in.");
         }
@@ -104,7 +106,7 @@ const Login = () => {
         {/* Visit Us Button */}
         <button
           onClick={() => navigate("/")}
-          className="absolute bottom-4 left-4 bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition duration-300"
+          className="absolute bottom-4 left-4 bg-primary text-white px-6 py-2 rounded-full hover:bg-black transition duration-300"
         >
           Visit Us
         </button>
@@ -186,13 +188,29 @@ const Login = () => {
                 placeholder="Facebook Link"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <input
-                type="url"
-                value={linkedinLink}
-                onChange={(e) => setLinkedinLink(e.target.value)}
-                placeholder="LinkedIn Link"
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 col-span-1 md:col-span-2"
-              />
+              <div className="grid grid-cols-2 gap-4 col-span-1 md:col-span-2">
+                <input
+                  type="url"
+                  value={linkedinLink}
+                  onChange={(e) => setLinkedinLink(e.target.value)}
+                  placeholder="LinkedIn Link"
+                  className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <select
+                  value={workSector}
+                  onChange={(e) => setWorkSector(e.target.value)}
+                  className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="" disabled>
+                    Select Work Sector
+                  </option>
+                  <option value="Higher Study">Higher Study</option>
+                  <option value="Government">Government</option>
+                  <option value="Higher Study">Defence</option>
+                  <option value="Private">Private Sector</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
               <div className="relative col-span-1 md:col-span-2">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -214,7 +232,7 @@ const Login = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm Password"
-                  className="p-3 w-full mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <button
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -224,49 +242,50 @@ const Login = () => {
                 </button>
               </div>
             </div>
-            <button
-              onClick={submitHandler}
-              className="w-full max-w-xl bg-blue-500 text-white p-3 mb-4 rounded-lg hover:bg-blue-600 transition duration-300"
-            >
-              Register
-            </button>
           </>
         ) : (
           <>
             <h2 className="text-3xl font-semibold mb-6">Sign In</h2>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="p-3 mb-4 w-full max-w-xl border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <div className="relative w-full max-w-xl">
+            <div className="grid grid-cols-1 gap-4 w-full max-w-sm">
               <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                className="p-3 w-full mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <button
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 text-xl text-gray-500 focus:outline-none"
-              >
-                {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
-              </button>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  className="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 text-xl text-gray-500 focus:outline-none"
+                >
+                  {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
+                </button>
+              </div>
             </div>
-            <button
-              onClick={submitHandler}
-              className="w-full max-w-xl bg-blue-500 text-white p-3 mb-4 rounded-lg hover:bg-blue-600 transition duration-300"
-            >
-              Sign In
-            </button>
-            <button className="w-full max-w-xl bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition duration-300">
-              Login with Google
-            </button>
           </>
         )}
+        <button
+          onClick={submitHandler}
+          className="bg-primary text-white w-full max-w-sm py-3 rounded-lg mt-6 hover:bg-black transition duration-300"
+        >
+          {isRegister ? "Register" : "Sign In"}
+        </button>
+        {/* {!isRegister && (
+          <button
+            onClick={() => console.log("Login with Google")}
+            className="bg-red-500 text-white w-full max-w-sm py-3 rounded-lg mt-3 hover:bg-red-600 transition duration-300"
+          >
+            Login with Google
+          </button>
+        )} */}
       </div>
     </div>
   );

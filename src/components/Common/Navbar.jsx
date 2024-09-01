@@ -22,12 +22,12 @@ function Navbar() {
   const handleLogout = () => {
     signOut(); // Perform the logout action
     setIsLoggedIn(false); // Update the authentication state
-    navigate("/"); // Optionally, redirect to the home page or any other page
+    navigate("/"); // Redirect to the home page or any other page
   };
 
   useEffect(() => {
     setActivePage(location.pathname); // Update the active page when the location changes
-    setIsLoggedIn(isAuthenticated); // Update the logged-in state when the component mounts or changes
+    setIsLoggedIn(isAuthenticated); // Update the logged-in state when the auth state changes
   }, [location, isAuthenticated]);
 
   return (
@@ -53,7 +53,7 @@ function Navbar() {
             >
               {page.name}
               <span
-                className={`absolute left-1/2 bottom-[-2px] w-0 h-1 bg-secondary transition-all duration-300 ease-in-out transform -translate-x-1/2 ${
+                className={`absolute rounded-md left-1/2 bottom-[-2px] w-0 h-1 bg-secondary transition-all duration-300 ease-in-out transform -translate-x-1/2 ${
                   activePage === page.path ? "w-full" : ""
                 }`}
               ></span>
@@ -61,12 +61,28 @@ function Navbar() {
           ))}
 
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-md shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
-            >
-              Logout
-            </button>
+            <>
+              <Link
+                to="/profile"
+                className={`relative group py-2 ${
+                  activePage === "/profile" ? "text-secondary" : "text-black"
+                } transition-colors duration-300`}
+                onClick={() => setActivePage("/profile")}
+              >
+                Profile
+                <span
+                  className={`absolute rounded-md left-1/2 bottom-[-2px] w-0 h-1 bg-secondary transition-all duration-300 ease-in-out transform -translate-x-1/2 ${
+                    activePage === "/profile" ? "w-full" : ""
+                  }`}
+                ></span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-md shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Link
               to="/authentication"

@@ -7,6 +7,7 @@ import AuthenticateUser from "./components/Common/AuthenticateUser";
 import Login from "./components/Alumni/Login";
 import AdminLogin from "./components/Admin/AdminLogin";
 import Layout from "./components/Common/Layout";
+import Members from "./components/Common/Members";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
           path="/members"
           element={
             <Layout>
-              <Home />
+              <Members />
             </Layout>
           }
         />
@@ -63,11 +64,11 @@ function App() {
           }
         />
         <Route
-          path="/dashboard"
+          path="/profile"
           element={
-            <AuthenticateUser role="alumni">
+            <Layout>
               <Dashboard />
-            </AuthenticateUser>
+            </Layout>
           }
         />
         <Route path="*" element={<NotFound />} />

@@ -1,8 +1,10 @@
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import PleaseSignInFirst from "../Common/PleaseSignInFirst";
 
 const AlumniDashboard = () => {
-  return (
-    <div>AlumniDashboard</div>
-  )
-}
+  const isAuthenticated = useAuthUser();
 
-export default AlumniDashboard
+  return isAuthenticated ? <div>AlumniDashboard</div> : <PleaseSignInFirst />;
+};
+
+export default AlumniDashboard;
