@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import Dashboard from "./components/Alumni/Dashboard";
@@ -10,6 +10,9 @@ import Layout from "./components/Common/Layout";
 import Members from "./components/Common/Members";
 import Events from "./components/Events/Events";
 import EventExpanded from "./components/Events/EventExpanded";
+import AboutUs from "./components/AboutUs/AboutUs";
+import ContactUs from "./components/ContactUs/ContactUs";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 
 function App() {
   return (
@@ -45,7 +48,7 @@ function App() {
           path="/about-us"
           element={
             <Layout>
-              <Home />
+              <AboutUs />
             </Layout>
           }
         />
@@ -53,7 +56,7 @@ function App() {
           path="/contact-us"
           element={
             <Layout>
-              <Home />
+              <ContactUs />
             </Layout>
           }
         />
@@ -77,7 +80,7 @@ function App() {
           path="/profile"
           element={
             <Layout>
-              <Dashboard />
+              <ProfilePage />
             </Layout>
           }
         />
