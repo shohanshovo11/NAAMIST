@@ -105,7 +105,7 @@ const Filters = ({
           <input
             type="text"
             placeholder="Search..."
-            className="px-4 py-2 border rounded-md"
+            className="px-4 py-2 border rounded-md mt-4 md:mt-0"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
