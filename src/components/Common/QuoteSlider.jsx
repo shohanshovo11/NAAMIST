@@ -8,7 +8,6 @@ function QuoteSlider() {
     speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // arrows: true,
     autoplay: true,
     autoplaySpeed: 3000,
   };
@@ -29,15 +28,15 @@ function QuoteSlider() {
   ];
 
   return (
-    <div className=" w-full h-[300px] bg-primary flex justify-center items-center mb-10">
-      <Slider {...settings} className=" w-full overflow-hidden">
+    <div className="w-full h-[300px] bg-primary flex justify-center items-center mb-10">
+      <Slider {...settings} className="w-full overflow-hidden">
         {quotes.map((quote, index) => (
           <div key={index} className="flex justify-center items-center">
-            <div className="mx-auto w-3/6 flex flex-col">
-              <h2 className="text-2xl text-white font-extralight leading-10 tracking-[3.4px]">
+            <div className="mx-auto w-4/6 md:w-3/6 flex flex-col text-center">
+              <h2 className="text-lg md:text-xl lg:text-2xl text-white font-extralight leading-relaxed md:leading-snug lg:leading-loose tracking-[1.5px] md:tracking-[2px] lg:tracking-[3.4px]">
                 {quote.text}
               </h2>
-              <h3 className="text-xl text-white mt-4 self-end">
+              <h3 className="text-base md:text-lg lg:text-xl text-white mt-4 self-end">
                 {quote.author}
               </h3>
             </div>
