@@ -147,7 +147,7 @@ function Home() {
     <>
       <HeroSlider />
       <div className="container mx-auto px-4 py-8">
-        <div className="w-2/3 mx-auto">
+        <div className="md:w-2/3 md:mx-auto">
           <h2 className="text-4xl font-bold text-center mb-2 text-primary">
             Welcome to NAAMIST
           </h2>
