@@ -3,17 +3,22 @@ import { IoIosArrowForward } from "react-icons/io";
 import { format } from "date-fns";
 import { CiCalendar } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
-
 const { Meta } = Card;
 
 // EventCard Component
-const EventCard = ({ _id, imageUrl, title, description, eventDate }) => {
+const EventCard = ({
+  _id,
+  imageUrl,
+  title,
+  description,
+  eventDate,
+  eventContent,
+}) => {
   const navigate = useNavigate();
-
   // Format the date object to a readable string
   const formattedDate = format(new Date(eventDate), "MMMM d, yyyy");
   const handleCardClick = () => {
-    navigate(`/event/${_id}`);
+    navigate(`/event/${_id}`, { state: { eventContent, imageUrl } });
   };
   return (
     <Card
@@ -25,7 +30,6 @@ const EventCard = ({ _id, imageUrl, title, description, eventDate }) => {
         />
       }
       className="p-4 bg-white shadow-lg rounded-lg"
-      onClick={handleCardClick}
     >
       <div className="pb-2 border-b border-gray-200">
         <Meta
@@ -45,10 +49,11 @@ const EventCard = ({ _id, imageUrl, title, description, eventDate }) => {
           <span className="ml-2">{formattedDate}</span>
         </div>
       </div>
-      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-        <span className="text-primary font-semibold cursor-pointer">
-          Read More
-        </span>
+      <div
+        className="flex items-center justify-between pt-4 border-t border-gray-200 cursor-pointer"
+        onClick={handleCardClick}
+      >
+        <span className="text-primary font-semibold ">Read More</span>
         <IoIosArrowForward className="text-primary text-xl" />
       </div>
     </Card>

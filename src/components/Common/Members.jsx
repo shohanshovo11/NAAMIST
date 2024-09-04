@@ -74,7 +74,7 @@ const Filters = ({
           }`}
           onClick={() => setFilter("executive")}
         >
-          Executive Panel
+          Committee
         </button>
         <button
           className={`px-4 py-2 rounded-md shadow-md transition-colors duration-300 ease-in-out ${
