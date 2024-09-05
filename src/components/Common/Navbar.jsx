@@ -109,12 +109,18 @@ function Navbar() {
         </div>
 
         {/* Mobile Menu */}
+        {/* Mobile Menu */}
         <div
-          className={`fixed inset-0 bg-black bg-opacity-50 transform ${
-            menuOpen ? "translate-x-0 z-20" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out md:hidden`}
+          className={`fixed inset-0 bg-black bg-opacity-50 ${
+            menuOpen ? "z-20" : "z-[-1]"
+          } transition-opacity duration-300 ease-in-out md:hidden`}
+          style={{ opacity: menuOpen ? 1 : 0 }}
         >
-          <div className="bg-white w-3/4 h-full p-6">
+          <div
+            className={`bg-white w-64 h-full p-6 absolute right-0 top-0 shadow-lg transition-transform duration-300 ease-in-out ${
+              menuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
             {pages.map((page) => (
               <Link
                 key={page.name}
