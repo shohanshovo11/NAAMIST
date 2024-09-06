@@ -64,7 +64,7 @@ const Filters = ({
   ];
 
   return (
-    <div className={`flex flex-wrap justify-between items-center my-4 `}>
+    <div className={`flex flex-wrap justify-between items-center my-4`}>
       <div className="flex space-x-4">
         <button
           className={`px-4 py-2 rounded-md shadow-md transition-colors duration-300 ease-in-out ${
@@ -87,11 +87,12 @@ const Filters = ({
           All Members
         </button>
       </div>
+
       {filter !== "executive" && (
-        <>
-          <div className="flex space-x-4">
+        <div className="flex flex-col md:flex-row md:items-center md:space-x-4 w-full md:w-auto mt-4 md:mt-0">
+          <div className="flex-1 md:flex-none">
             <select
-              className="px-4 py-2 border rounded-md"
+              className="px-4 py-2 border rounded-md w-full md:w-auto"
               value={workSector}
               onChange={(e) => setWorkSector(e.target.value)}
             >
@@ -102,18 +103,22 @@ const Filters = ({
               ))}
             </select>
           </div>
-          <input
-            type="text"
-            placeholder="Search..."
-            className="px-4 py-2 border rounded-md mt-4 md:mt-0"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </>
+
+          <div className="flex-1 md:flex-none mt-2 md:mt-0">
+            <input
+              type="text"
+              placeholder="Search..."
+              className="px-4 py-2 border rounded-md w-full md:w-auto"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
 };
+
 
 // User Card Component
 const UserCard = ({ user }) => {
@@ -142,7 +147,7 @@ const UserCard = ({ user }) => {
   );
 };
 
-// Executive Panel Component with AntD Table
+// Executive Panel Component with AntD Table and Responsive Scrolling
 const ExecutivePanel = () => {
   const columns = [
     {
@@ -191,12 +196,15 @@ const ExecutivePanel = () => {
   ];
 
   return (
-    <Table
-      dataSource={executiveMembers}
-      columns={columns}
-      rowKey="id"
-      pagination={false}
-    />
+    <div className="w-full overflow-x-auto">
+      <Table
+        dataSource={executiveMembers}
+        columns={columns}
+        rowKey="id"
+        pagination={false}
+        className="min-w-full"
+      />
+    </div>
   );
 };
 
