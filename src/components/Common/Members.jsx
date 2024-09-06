@@ -1,49 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { Table, Avatar } from "antd";
 import HeroSection from "./HeroSection";
-
-// Demo Data
-const allMembers = [
-  {
-    id: 1,
-    name: "Mohammad Sabbir Hossain",
-    batch: "2020",
-    workSector: "Government",
-    imageUrl:
-      "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    facebook: "#",
-    twitter: "#",
-    linkedin: "#",
-  },
-];
-
-const executiveMembers = [
-  {
-    id: 1,
-    name: "John Doe",
-    batch: "2018",
-    workSector: "Private",
-    panelPosition: "President",
-    imageUrl:
-      "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    facebook: "#",
-    twitter: "#",
-    linkedin: "#",
-  },
-  {
-    id: 1,
-    name: "MD Akib",
-    batch: "2018",
-    workSector: "Government",
-    panelPosition: "Vice President",
-    imageUrl:
-      "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    facebook: "#",
-    twitter: "#",
-    linkedin: "#",
-  },
-];
+import allMembers from "../../utils/data/members";
+import executiveMembers from "../../utils/data/committeeMembers";
 
 // Filters Component
 const Filters = ({
@@ -118,7 +78,6 @@ const Filters = ({
     </div>
   );
 };
-
 
 // User Card Component
 const UserCard = ({ user }) => {
@@ -218,16 +177,19 @@ const Members = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    let filteredUsers = [];
+
     if (filter === "executive") {
       // No need for pagination in executive panel
       setUsers(executiveMembers);
     } else {
       // Filter all members based on search query and work sector
-      const filteredUsers = allMembers.filter(
+      filteredUsers = allMembers.filter(
         (user) =>
           (workSector === "All" || user.workSector === workSector) &&
-          (user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            user.batch.includes(searchQuery))
+          (user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            user?.batch?.includes(searchQuery) ||
+            user?.workSector?.toLowerCase().includes(searchQuery.toLowerCase()))
       );
 
       // Pagination logic
