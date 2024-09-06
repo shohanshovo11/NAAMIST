@@ -46,19 +46,19 @@ function HeroSlider() {
             <img
               src={item.image}
               alt={`Slide ${index + 1}`}
-              className="w-full h-auto max-h-[calc(100vh-70px)] object-cover object-top"
+              className="w-full h-[300px] sm:h-[400px] md:h-[calc(100vh-70px)] object-cover"
             />
             <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center">
               <div className="container mx-auto px-4 text-white max-w-screen-xl text-left">
-                <div className="text-left w-2/3">
-                  <h2 className="text-lg md:text-xl font-bold mb-4 font-sans">
+                <div className="text-left w-full md:w-2/3">
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-4 font-sans">
                     {item.motto}
                   </h2>
-                  <p className="text-lg md:text-2xl font-sans font-extralight mb-4">
+                  <p className="text-sm sm:text-lg md:text-2xl font-sans font-extralight mb-2 sm:mb-4">
                     {item.description}
                   </p>
                   <Link to={"/authorization"}>
-                    <button className="bg-secondary text-white px-8 py-3 rounded-lg transition-transform transform hover:scale-105 hover:opacity-90">
+                    <button className="bg-secondary text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-lg transition-transform transform hover:scale-105 hover:opacity-90">
                       Get Connected
                     </button>
                   </Link>

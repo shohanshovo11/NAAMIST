@@ -109,7 +109,6 @@ function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        {/* Mobile Menu */}
         <div
           className={`fixed inset-0 bg-black bg-opacity-50 ${
             menuOpen ? "z-20" : "z-[-1]"
