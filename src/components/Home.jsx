@@ -166,13 +166,13 @@ function Home() {
       </div>
 
       {/* Improved Latest Events and Announcements Section */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto md:px-4 md:py-8 mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-primary">
           What's Happening
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Latest Events Section */}
-          <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="bg-white md:shadow-lg rounded-lg p-6">
             <h3 className="text-xl md:text-2xl font-bold text-primary mb-4">
               Latest Events
             </h3>
@@ -180,36 +180,38 @@ function Home() {
               {events.slice(0, 4).map((event, index) => (
                 <div
                   key={index}
-                  className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
+                  className="bg-white shadow-sm border border-gray-200 rounded-lg p-4 md:p-6 space-y-4"
                 >
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full md:w-32 h-32 object-cover rounded-md"
-                  />
-                  <div className="flex-1">
-                    <h4 className="text-lg md:text-xl font-semibold text-gray-800">
-                      {event.title}
-                    </h4>
-                    <p className="text-sm md:text-base text-gray-600 mt-2">
-                      {event.shortDescription.slice(0, 100)}...
-                    </p>
-                    <button className="text-primary hover:underline mt-2 text-sm md:text-base font-medium">
-                      Learn More
-                    </button>
+                  <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full md:w-32 h-32 object-cover rounded-md"
+                    />
+                    <div className="flex-1">
+                      <h4 className="text-lg md:text-xl font-semibold text-gray-800">
+                        {event.title}
+                      </h4>
+                      <p className="text-sm md:text-base text-gray-600 mt-2">
+                        {event.shortDescription.slice(0, 100)}...
+                      </p>
+                      <button className="text-primary hover:underline mt-2 text-sm md:text-base font-medium">
+                        Learn More
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <button className="bg-primary text-white px-6 py-2 rounded-md text-sm md:text-base font-medium hover:bg-primary-dark transition duration-300">
+              <button className="bg-primary text-white px-6 py-2 rounded-md text-sm md:text-base font-medium hover:bg-primary-dark transition duration-300 hover:bg-black">
                 View All Events
               </button>
             </div>
           </div>
 
           {/* Announcements Section */}
-          <div className="bg-white shadow-lg rounded-lg p-6">
+          <div className="bg-white md:shadow-lg rounded-lg p-6">
             <h3 className="text-xl md:text-2xl font-bold text-primary mb-4">
               Announcements
             </h3>
@@ -217,29 +219,31 @@ function Home() {
               {announcements.slice(0, 4).map((announcement, index) => (
                 <div
                   key={index}
-                  className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4"
+                  className="bg-white shadow-sm border border-gray-200 rounded-lg p-4 md:p-6 space-y-4"
                 >
-                  <img
-                    src={announcement.image}
-                    alt={announcement.title}
-                    className="w-full md:w-32 h-32 object-cover rounded-md"
-                  />
-                  <div className="flex-1">
-                    <h4 className="text-lg md:text-xl font-semibold text-gray-800">
-                      {announcement.title}
-                    </h4>
-                    <p className="text-sm md:text-base text-gray-600 mt-2">
-                      Date: {new Date(announcement.date).toLocaleDateString()}
-                    </p>
-                    <button className="text-primary hover:underline mt-2 text-sm md:text-base font-medium">
-                      Learn More
-                    </button>
+                  <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+                    <img
+                      src={announcement.image}
+                      alt={announcement.title}
+                      className="w-full md:w-32 h-32 object-cover rounded-md"
+                    />
+                    <div className="flex-1">
+                      <h4 className="text-lg md:text-xl font-semibold text-gray-800">
+                        {announcement.title}
+                      </h4>
+                      <p className="text-sm md:text-base text-gray-600 mt-2">
+                        Date: {new Date(announcement.date).toLocaleDateString()}
+                      </p>
+                      <button className="text-primary hover:underline mt-2 text-sm md:text-base font-medium">
+                        Learn More
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <button className="bg-primary text-white px-6 py-2 rounded-md text-sm md:text-base font-medium hover:bg-primary-dark transition duration-300 ">
+              <button className="bg-primary text-white px-6 py-2 rounded-md text-sm md:text-base font-medium hover:bg-primary-dark transition duration-300 hover:bg-black">
                 View All Announcements
               </button>
             </div>
