@@ -25,7 +25,7 @@ function NameGallery() {
         ))}
       </div>
       <div className="flex justify-center mt-8">
-        <button className="px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-secondary transition-colors duration-300">
+        <button className="px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-black transition-colors duration-300">
           View More
         </button>
       </div>
