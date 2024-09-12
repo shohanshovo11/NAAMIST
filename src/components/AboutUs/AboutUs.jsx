@@ -1,4 +1,5 @@
 import HeroSection from "../Common/HeroSection";
+import erganogram from "../../assets/erganogram.png";
 
 const AboutUs = () => {
   return (
@@ -92,6 +93,12 @@ const AboutUs = () => {
             Connect with the MIST Alumni Network platform, exclusively for MIST
             Alumni only.
           </p>
+        </section>
+
+        <section className="mt-4">
+          <div>
+            <img src={erganogram} alt="Erganogram" />
+          </div>
         </section>
       </div>
     </>

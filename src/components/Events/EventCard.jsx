@@ -26,7 +26,7 @@ const EventCard = ({
         <img
           alt={title}
           src={imageUrl}
-          style={{ height: "200px", objectFit: "cover" }}
+          style={{ height: "200px", objectFit: "cover", objectPosition: "top" }}
         />
       }
       className="p-4 bg-white shadow-lg rounded-lg"

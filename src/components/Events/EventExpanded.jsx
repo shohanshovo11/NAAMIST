@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import HeroSection from "../Common/HeroSection";
 
 function EventExpanded() {
@@ -134,7 +134,7 @@ function EventExpanded() {
         }
         title={"Event Details"}
       />
-      <div className="max-w-screen-lg my-20 p-8 bg-white shadow-lg rounded-md mx-auto">
+      <div className="max-w-screen-lg my-4 p-8 bg-white shadow-lg rounded-md mx-auto">
         <div
           className="prose prose-lg"
           dangerouslySetInnerHTML={{ __html: eventContent }}

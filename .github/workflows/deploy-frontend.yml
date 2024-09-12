@@ -1,0 +1,35 @@
+name: Build and Deploy Frontend
+
+on:
+  push:
+    branches:
+      - frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Copy dist files to web directory
+        run: |
+          sudo cp -r dist/* /var/www/203.194.117.77/  # Replace with your directory
+        env:
+          NODE_ENV: production
+
+      # Optional: Restart your server if it's a web service that needs to restart
+      - name: Restart server (optional)
+        run: sudo systemctl restart your-service-name  # Replace with your service

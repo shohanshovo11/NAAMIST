@@ -172,7 +172,7 @@ function Events() {
         }
         title={"Events"}
       />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8 max-w-screen-xl mx-auto my-20">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-8 max-w-screen-xl mx-4 my-8 md:mx-auto">
         {currentEvents.map((event, index) => (
           <EventCard
             _id={event._id}
