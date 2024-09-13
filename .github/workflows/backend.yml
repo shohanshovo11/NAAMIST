@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - backend
+
 env:
   PORT: ${{secrets.PORT}}
   NODE_ENV: ${{secrets.NODE_ENV}}
@@ -19,5 +20,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci
-      - run: pm2 restart sohozmeal -a
+
+      # Change the working directory to backend directory
+      - name: Set up Node.js in backend
+        working-directory: ./backend # Assuming the backend is in the "backend" folder
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies for backend
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Start backend with PM2
+        working-directory: ./backend
+        run: pm2 restart sohozmeal -a
