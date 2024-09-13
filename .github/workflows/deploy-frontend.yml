@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted 
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -16,16 +16,25 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: "22"
 
+      # Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # Load secrets as environment variables
+      - name: Set environment variables for Vite
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" >> $GITHUB_ENV
+          echo "VITE_IMAGE_URL=${{ secrets.VITE_IMAGE_URL }}" >> $GITHUB_ENV
+
+      # Build the project using Vite
       - name: Build the project
         run: npm run build
 
+      # Copy dist files to web directory
       - name: Copy dist files to web directory
         run: |
-          sudo cp -r dist/* /var/www/naamist/ 
+          sudo cp -r dist/* /var/www/naamist/
         env:
           NODE_ENV: production

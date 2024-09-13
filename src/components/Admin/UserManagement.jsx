@@ -18,7 +18,6 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import Axios from "../../utils/axios";
-import axios from "axios";
 
 // Dummy data for the alumni
 const initialAlumniData = [
@@ -51,7 +50,7 @@ const initialAlumniData = [
     profilePic: "",
   },
 ];
-
+const imageUrl = import.meta.env.VITE_IMAGE_URL;
 // Add/Edit Alumni Form
 const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
   const [form] = Form.useForm();
@@ -262,7 +261,7 @@ const AlumniManagement = () => {
       render: (profilePic) =>
         profilePic ? (
           <img
-            src={`http://localhost:5000/uploads/${profilePic}`}
+            src={`${imageUrl}/images/${profilePic}`}
             alt="Profile"
             style={{ width: 50, height: 50, borderRadius: "50%" }}
           />
@@ -357,53 +356,53 @@ const AlumniManagement = () => {
     },
   ];
 
-  // Add new alumni
   const onCreate = async (formData) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
-          },
-        }
-      );
-
+      // Append isAuthorized field to formData
+      formData.append("isAuthorized", true);
+  
+      const res = await Axios.post("/auth/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
       if (res.status === 201) {
         const newAlumni = res.data.alumni;
         const updatedAlumniData = [
           ...alumniData,
           { ...newAlumni, key: newAlumni._id },
         ];
-
+  
         setAlumniData(updatedAlumniData);
         setFilteredAlumni(updatedAlumniData);
-        message.success("Alumni added successfully!");
+        
+        // Show success message that disappears after 2 seconds
+        message.success("Alumni added successfully!", 2);
         setVisible(false);
       }
     } catch (error) {
-      message.error("Error adding alumni");
+      // Show error message that disappears after 2 seconds
+      message.error("Error adding alumni", 2);
     }
   };
-
-  // Approve alumni function
+  
   const handleApprove = (key) => {
     const updatedAlumniData = alumniData.map((alumni) =>
       alumni.key === key ? { ...alumni, isAuthorized: true } : alumni
     );
     setAlumniData(updatedAlumniData);
-    message.success("Alumni approved successfully!");
+    message.success("Alumni approved successfully!", 2); // 2 seconds duration
     filterAlumniByApproval(filterStatus); // Keep the current filter after approval
   };
-
-  // Delete alumni function
+  
   const handleDelete = (key) => {
     const updatedAlumniData = alumniData.filter((alumni) => alumni.key !== key);
     setAlumniData(updatedAlumniData);
-    message.success("Alumni deleted successfully!");
+    message.success("Alumni deleted successfully!", 2); // 2 seconds duration
     setFilteredAlumni(updatedAlumniData); // Update filtered data as well
   };
+  
 
   // Handle editing alumni
   const handleEdit = (record) => {
