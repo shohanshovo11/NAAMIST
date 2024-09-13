@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '22'
 
       - name: Install dependencies
         run: npm ci
@@ -26,10 +26,6 @@ jobs:
 
       - name: Copy dist files to web directory
         run: |
-          sudo cp -r dist/* /var/www/203.194.117.77/  # Replace with your directory
+          sudo cp -r dist/* /var/www/naamist/ 
         env:
           NODE_ENV: production
-
-      # Optional: Restart your server if it's a web service that needs to restart
-      - name: Restart server (optional)
-        run: sudo systemctl restart your-service-name  # Replace with your service
