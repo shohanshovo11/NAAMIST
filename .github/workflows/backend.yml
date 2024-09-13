@@ -21,17 +21,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Change the working directory to backend directory
-      - name: Set up Node.js in backend
-        working-directory: ./backend # Assuming the backend is in the "backend" folder
+      # Set up Node.js for the project
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
 
+      # Change the working directory to backend for installing dependencies
       - name: Install dependencies for backend
         working-directory: ./backend
         run: npm ci
 
+      # Start backend using PM2
       - name: Start backend with PM2
         working-directory: ./backend
-        run: pm2 restart sohozmeal -a
+        run: pm2 restart naamist -a
