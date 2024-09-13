@@ -33,7 +33,7 @@ jobs:
 
       # Copy the NAAMIST folder to the backend directory
       - name: Copy NAAMIST folder
-        run: sudo cp -r ./NAAMIST ../naamist_backend
+        run: sudo cp -r ../NAAMIST/* ../naamist_backend
 
       # Install dependencies for backend
       - name: Install dependencies for backend
