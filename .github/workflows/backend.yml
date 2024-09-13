@@ -29,7 +29,7 @@ jobs:
 
       # Ensure the backend folder exists
       - name: Ensure backend folder exists
-        run: mkdir -p ../naamist_backend
+        run: sudo mkdir -p ../naamist_backend
 
       # Install dependencies for backend
       - name: Install dependencies for backend
