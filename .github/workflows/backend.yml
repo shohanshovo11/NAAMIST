@@ -6,13 +6,13 @@ on:
       - backend
 
 env:
-  PORT: ${{secrets.PORT}}
-  NODE_ENV: ${{secrets.NODE_ENV}}
-  SALT_ROUNDS: ${{secrets.SALT_ROUNDS}}
-  JWT_SECRET: ${{secrets.JWT_SECRET}}
-  DB_URI_CLOUD: ${{secrets.DB_URI_CLOUD}}
-  API_KEY: ${{secrets.API_KEY}}
-  SENDER_ID: ${{secrets.SENDER_ID}}
+  PORT: ${{ secrets.PORT }}
+  NODE_ENV: ${{ secrets.NODE_ENV }}
+  SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  DB_URI_CLOUD: ${{ secrets.DB_URI_CLOUD }}
+  API_KEY: ${{ secrets.API_KEY }}
+  SENDER_ID: ${{ secrets.SENDER_ID }}
 
 jobs:
   build:
@@ -27,9 +27,13 @@ jobs:
         with:
           node-version: '22'
 
-      # Ensure the backend folder exists
-      - name: Ensure backend folder exists
+      # Create the backend folder if it doesn't exist
+      - name: Create backend folder
         run: sudo mkdir -p ../naamist_backend
+
+      # Copy the NAAMIST folder to the backend directory
+      - name: Copy NAAMIST folder
+        run: sudo cp -r ./NAAMIST ../naamist_backend
 
       # Install dependencies for backend
       - name: Install dependencies for backend
