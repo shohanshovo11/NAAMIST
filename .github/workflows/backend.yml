@@ -27,12 +27,16 @@ jobs:
         with:
           node-version: '22'
 
-      # Change the working directory to backend for installing dependencies
+      # Ensure the backend folder exists
+      - name: Ensure backend folder exists
+        run: mkdir -p ../naamist_backend
+
+      # Install dependencies for backend
       - name: Install dependencies for backend
-        working-directory: ./backend
+        working-directory: ../naamist_backend
         run: npm ci
 
       # Start backend using PM2
       - name: Start backend with PM2
-        working-directory: ./backend
+        working-directory: ../naamist_backend
         run: pm2 restart naamist -a
