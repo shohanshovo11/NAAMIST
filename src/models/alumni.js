@@ -37,9 +37,9 @@ const alumniSchema = new mongoose.Schema({
     required: true,
   },
   mobile: {
-    type: String, 
+    type: String,
     required: true,
-    match: /^01\d{9}$/,
+    match: /^01\d{9}$/, // Bangladesh mobile number validation
   },
   workplace: {
     type: String,
@@ -62,6 +62,10 @@ const alumniSchema = new mongoose.Schema({
     type: String,
     required: true,
     default: 'alumni',
+  },
+  profilePic: {
+    type: String, // URL of the profile picture
+    default: '', // Optional, can set a default URL if needed
   },
 });
 

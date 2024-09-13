@@ -1,0 +1,23 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - backend
+env:
+  PORT: ${{secrets.PORT}}
+  NODE_ENV: ${{secrets.NODE_ENV}}
+  SALT_ROUNDS: ${{secrets.SALT_ROUNDS}}
+  JWT_SECRET: ${{secrets.JWT_SECRET}}
+  DB_URI_CLOUD: ${{secrets.DB_URI_CLOUD}}
+  API_KEY: ${{secrets.API_KEY}}
+  SENDER_ID: ${{secrets.SENDER_ID}}
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+      - run: pm2 restart sohozmeal -a

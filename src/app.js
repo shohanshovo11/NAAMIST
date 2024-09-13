@@ -1,15 +1,22 @@
 require('dotenv').config();
 
 const express = require('express');
-
-const app = express();
 const cors = require('cors');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const fs = require('fs');
+const path = require('path');
 const dbConnect = require('./config/database');
 const apiRoutes = require('./routes/index');
 
+const app = express();
 const port = process.env.PORT || 5000;
+
+// Ensure uploads directory exists in the project root, create if not
+const uploadsDir = path.join(__dirname, '../images');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Middleware Array
 const middleware = [
@@ -22,6 +29,7 @@ const middleware = [
 ];
 
 app.use(middleware);
+app.use('/images', express.static('images'));
 
 // Default route
 app.get('/', (req, res) => {
@@ -33,7 +41,6 @@ app.use('/api', apiRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  // Add 'next' as the fourth parameter
   console.error(err.stack);
   res.status(500).json({ error: 'Internal Server Error' });
 });

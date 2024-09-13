@@ -15,17 +15,21 @@
     "sourceType": "module"
   },
   "rules": {
-    "indent": ["warn", 2],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"],
-    "no-console": 1,
-    "comma-dangle": [0],
-    "arrow-parens": [0],
-    "object-curly-spacing": ["warn", "always"],
-    "array-bracket-spacing": ["warn", "always"],
-    "import/prefer-default-export": [0],
-    "consistent-return": "off",
-    "no-unused-vars": "warn"
+    "indent": ["warn", 2], // Warnings for indentation
+    "linebreak-style": ["off"], // Turn off OS-specific linebreak errors
+    "quotes": ["warn", "single"], // Warn for single vs double quotes
+    "semi": ["warn", "always"], // Warn for missing semicolons
+    "no-console": "off", // Allow console logs
+    "comma-dangle": "off", // Turn off dangling commas
+    "arrow-parens": "off", // Turn off strict arrow parens enforcement
+    "object-curly-spacing": ["warn", "always"], // Warn for object spacing
+    "array-bracket-spacing": ["warn", "always"], // Warn for array spacing
+    "import/prefer-default-export": "off", // Disable default export preference
+    "consistent-return": "off", // Turn off consistent return enforcement
+    "no-unused-vars": "warn", // Only warn for unused variables
+    "no-undef": "error", // Flag undeclared variables (important)
+    "no-extra-semi": "error", // Flag extra semicolons (syntax issue)
+    "no-redeclare": "error", // Disallow redeclaring variables
+    "no-unreachable": "error" // Error for unreachable code
   }
 }
