@@ -21,15 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # # Set up Node.js for the project
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '22'
-
-      # Create the backend folder in /home if it doesn't exist
-      - name: Create backend folder in /home
-        run: sudo mkdir -p /home/naamist_backend
+      # Create the backend folder in /home if it doesn't exist and set permissions to 777
+      - name: Create backend folder in /home with 777 permission
+        run: |
+          sudo mkdir -p /home/naamist_backend
+          sudo chmod 777 /home/naamist_backend
 
       # Copy the contents of NAAMIST to /home/naamist_backend
       - name: Copy NAAMIST folder
