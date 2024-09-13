@@ -21,26 +21,26 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Set up Node.js for the project
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
+      # # Set up Node.js for the project
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: '22'
 
-      # Create the backend folder if it doesn't exist
-      - name: Create backend folder
-        run: sudo mkdir -p ../naamist_backend
+      # Create the backend folder in /home if it doesn't exist
+      - name: Create backend folder in /home
+        run: sudo mkdir -p /home/naamist_backend
 
-      # Copy the NAAMIST folder to the backend directory test
+      # Copy the contents of NAAMIST to /home/naamist_backend
       - name: Copy NAAMIST folder
-        run: sudo cp -r ../NAAMIST/* ../naamist_backend
+        run: sudo cp -r ../NAAMIST/* /home/naamist_backend
 
-      # Install dependencies for backend
+      # Set /home/naamist_backend as the default working directory
       - name: Install dependencies for backend
-        working-directory: ../naamist_backend
+        working-directory: /home/naamist_backend
         run: npm ci
 
-      # Start backend using PM2
+      # Start backend using PM2 from /home/naamist_backend
       - name: Start backend with PM2
-        working-directory: ../naamist_backend
+        working-directory: /home/naamist_backend
         run: pm2 restart naamist -a
