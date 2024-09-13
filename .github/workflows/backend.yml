@@ -31,7 +31,7 @@ jobs:
       - name: Create backend folder
         run: sudo mkdir -p ../naamist_backend
 
-      # Copy the NAAMIST folder to the backend directory
+      # Copy the NAAMIST folder to the backend directory test
       - name: Copy NAAMIST folder
         run: sudo cp -r ../NAAMIST/* ../naamist_backend
 
