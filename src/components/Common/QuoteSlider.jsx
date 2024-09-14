@@ -18,12 +18,13 @@ function QuoteSlider() {
       author: "- Cdre Md Mohidul Hasan, (E), OSP, psc, BN",
     },
     {
-      text: `"Alumni connections are the lifeblood of our community, and your ongoing support drives our mission forward. Together, we achieve greatness."`,
-      author: "- Dr. Jane Doe",
+      text: `Welcome to the start of an incredible journey! The experiences and friendships you build here will last a lifetime. We can’t wait to see you grow and join our proud alumni family.
+      Wishing you success and a bright future ahead!`,
+      author: "- Md. Sakib-Ul-Alam, President(Name Alumni Association)",
     },
     {
-      text: `"Education is the foundation upon which we build our future. The strength of our alumni network ensures that we continue to thrive and evolve."`,
-      author: "- Prof. John Smith",
+      text: `Your journey is just beginning, but soon, you’ll stand where we do now — proud alumni of this incredible institution. Embrace every moment, challenge yourself, and remember, you’re not just making memories, you’re creating your legacy.`,
+      author: "- Hasan Ruhan Rabbi, VP(Name Alumni Association)",
     },
   ];
 

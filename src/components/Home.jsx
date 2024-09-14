@@ -21,11 +21,11 @@ function Home() {
       image: "/images/events/3/1.jpg",
     },
     {
-      title: "Alumni Meeting 2023",
-      date: Date.now(),
+      title: "CAREER TALK Session with NAME-8",
+      date: new Date("2024-03-03"),
       shortDescription:
-        "Join the Department of Naval Architecture and Marine Engineering for our annual Alumni Meeting. Reconnect with fellow alumni and faculty while discussing the future of the maritime industry and its challenges.",
-      image: "/images/events/2/am_2.jpg",
+        "Our newly formed NAME Alumni Association of MIST (NAAMIST) arranged a 'CAREER TALK' session with our recent graduating batch NAME-8. We are thankful to everyone who joined us physically and virtually (Shad Karim, Hironmoy Ahmad, Ruhan Ràbbí) to share their experiences and journey after graduation. More programs like this will be arranged in the future to engage each other and create value in the maritime industry.",
+      image: "/images/events/4/1.jpg",
     },
     {
       title: "NAME Alumni Reunion",
@@ -115,24 +115,7 @@ function Home() {
       image: "/images/events/2/am_2.jpg",
     },
     {
-      title: "NAAMIST Website Publish",
-      date: Date.now(),
-      image: "/images/NAAMIST.png",
-    },
-    {
       title: "NAME Alumni Reunion",
-      date: Date.now(),
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      title: "NAME Alumni Networking Event",
-      date: Date.now(),
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      title: "NAME Alumni Fundraiser",
       date: Date.now(),
       image:
         "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
@@ -153,7 +136,7 @@ function Home() {
           <p className="text-center text-gray-600 text-sm md:text-base">
             Graduates of the Naval Architecture and Marine Engineering
             department at the Military Institute of Science and Technology
-            belong to an organized community of more than 7,000 alumni spanning
+            belong to an organized community of more than 150+ alumni spanning
             across the globe. This incredible network, the MIST NAME Alumni
             Association, represents a powerful force for the advancement of the
             Institute and for its alumni.

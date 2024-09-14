@@ -12,15 +12,13 @@ const heroItems = [
       "Rediscover memories, reconnect with friends, and reignite your bond with our Alumni community.",
   },
   {
-    image:
-      "https://c4.wallpaperflare.com/wallpaper/297/18/527/digital-art-artwork-illustration-science-fiction-planet-hd-wallpaper-preview.jpg",
+    image: "/images/events/2/am_2.jpg",
     motto: "Explore the Universe",
     description:
       "Dive into the mysteries of the cosmos with our cutting-edge space research community.",
   },
   {
-    image:
-      "https://c4.wallpaperflare.com/wallpaper/410/867/750/vector-forest-sunset-forest-sunset-forest-wallpaper-preview.jpg",
+    image: "/images/events/3/1.jpg",
     motto: "Experience Tranquility",
     description:
       "Find peace and connect with nature through our serene and beautiful campus environment.",
