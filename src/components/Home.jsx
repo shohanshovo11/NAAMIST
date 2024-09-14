@@ -7,28 +7,25 @@ import NameGallery from "./Common/NameGallery";
 function Home() {
   const events = [
     {
-      title: "NAME Alumni Reunion",
+      title: "Donation for Flood Affected People",
       date: Date.now(),
       shortDescription:
-        "Join us for the annual NAME Alumni Reunion at MIST in Dhaka. Reconnect with classmates, meet fellow alumni, and celebrate the NAME community.",
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "We always stand for the country, for the people. Whenever needed.",
+      image: "/images/events/1/1.jpg",
     },
     {
-      title: "NAME Alumni Networking Event",
+      title: "Industrial Advisory Panel, 4th Meeting",
       date: Date.now(),
       shortDescription:
-        "Connect with NAME alumni from around the world at our virtual networking event. Share your experiences, exchange ideas, and build new relationships.",
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "The 4th meeting of the Industrial Advisory Panel will address curriculum development, research advancements, and the future needs of the maritime industry. Join us for insightful discussions and collaboration.",
+      image: "/images/events/3/1.jpg",
     },
     {
-      title: "NAME Alumni Fundraiser",
+      title: "Alumni Meeting 2023",
       date: Date.now(),
       shortDescription:
-        "Support the NAME Alumni Association of MIST by participating in our annual fundraiser. Your donations help fund scholarships, research, and other initiatives.",
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "Join the Department of Naval Architecture and Marine Engineering for our annual Alumni Meeting. Reconnect with fellow alumni and faculty while discussing the future of the maritime industry and its challenges.",
+      image: "/images/events/2/am_2.jpg",
     },
     {
       title: "NAME Alumni Reunion",
@@ -106,22 +103,21 @@ function Home() {
 
   const announcements = [
     {
-      title: "New Scholarship Opportunity",
-      date: Date.now(),
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      title: 'CALL FOR ARTICLES – "THE SAIL-2020 (5TH EDITION)"',
+      date: new Date("2021-01-14"), // Date of the announcement
+      description:
+        'We are calling for articles, short stories, write-ups, and experiences for the 5th edition of "THE SAIL-2020", the annual magazine of the NAME department, MIST. Submission deadline: 20th February 2021. Please email your articles in MS Word/PDF format to rafi.mashrur@name.mist.ac.bd.',
+      image: "/images/announcements/SAIL.png",
     },
     {
-      title: "Research Grant Applications Open",
+      title: "Alumni Reunion 2023",
       date: Date.now(),
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image: "/images/events/2/am_2.jpg",
     },
     {
-      title: "NAME Alumni Association of MIST Annual Meeting",
+      title: "NAAMIST Website Publish",
       date: Date.now(),
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image: "/images/NAAMIST.png",
     },
     {
       title: "NAME Alumni Reunion",

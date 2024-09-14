@@ -187,7 +187,7 @@ const Members = () => {
       // Filter all members based on search query and work sector
       filteredUsers = allMembers.filter(
         (user) =>
-          (workSector === "All" || user.workSector === workSector) &&
+          (workSector === "All" || user.workSectorType === workSector) &&
           (user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             user?.batch?.includes(searchQuery) ||
             user?.workSector?.toLowerCase().includes(searchQuery.toLowerCase()))

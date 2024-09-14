@@ -9,9 +9,10 @@ const allMembers = [
     phone: "1821701027",
     email: "aritrasaha10@gmail.com",
     workSector: "Research Assistant, Yokohama National University",
-    jobType: "Academician",
+    jobType: "Academician", // Adding the relevant sector
     batch: "01",
     imageUrl: `${imgLink}aritra_kumar_saha_name01.png`,
+    workSectorType: "Higher Study", // New field added
   },
   {
     id: 12,
@@ -23,6 +24,7 @@ const allMembers = [
     workSector: "Analyst, CET, Standard Chartered Bangladesh",
     batch: "01",
     imageUrl: `${imgLink}RababRaiyaturRahaman_name01.jpg`,
+    workSectorType: "Private", // New field added
   },
   {
     id: 14,
@@ -34,6 +36,7 @@ const allMembers = [
     workSector: "Marine Surveyor, BV",
     batch: "01",
     imageUrl: `${imgLink}sakib_ul_alam_name01.png`,
+    workSectorType: "Private", // New field added
   },
   {
     id: 15,
@@ -45,6 +48,7 @@ const allMembers = [
     workSector: "GTA, Yokohama National University",
     batch: "01",
     imageUrl: `${imgLink}reyana_islam_name01.png`,
+    workSectorType: "Higher Study", // New field added
   },
   {
     id: 16,
@@ -56,6 +60,7 @@ const allMembers = [
     workSector: "AD (General), Bangladesh Bank LTD.",
     batch: "01",
     imageUrl: `${imgLink}AbdullahHisSaad_name01.jpg`,
+    workSectorType: "Government", // New field added
   },
   {
     id: 17,
@@ -67,6 +72,7 @@ const allMembers = [
     workSector: "GTA, TU Bergakademie Freiberg",
     batch: "01",
     imageUrl: `${imgLink}RajiaSultanaKamol_name01.jpg`,
+    workSectorType: "Higher Study", // New field added
   },
   {
     id: 18,
@@ -78,6 +84,7 @@ const allMembers = [
     batch: "01",
     workSector: "Naval Engineer, Saipem, France",
     imageUrl: `${imgLink}KanizaFatemaBristy_name01.png`,
+    workSectorType: "Private", // New field added
   },
   {
     id: 19,
@@ -89,6 +96,7 @@ const allMembers = [
     batch: "01",
     workSector: "Project Specialist (Marine), Islamic Development Bank",
     imageUrl: defaultProfile,
+    workSectorType: "Private", // New field added
   },
   {
     id: 20,
@@ -100,7 +108,9 @@ const allMembers = [
     workSector: "Civil",
     batch: "01",
     imageUrl: `${imgLink}KaziShakibAhasan_name01.jpg`,
+    workSectorType: "Government", // New field added
   },
 ];
+
 
 export default allMembers;
