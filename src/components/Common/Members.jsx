@@ -20,6 +20,7 @@ const Filters = ({
     "Private",
     "Higher Study",
     "Defence",
+    "Academician",
     "Others",
   ];
 

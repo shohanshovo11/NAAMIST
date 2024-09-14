@@ -1,4 +1,5 @@
-import profileLink from "./profileLink";
+import defaultProfile from "./profileLink";
+const imgLink = "https://203.194.117.77/images/";
 const allMembers = [
   {
     id: 11,
@@ -8,7 +9,9 @@ const allMembers = [
     phone: "1821701027",
     email: "aritrasaha10@gmail.com",
     workSector: "Research Assistant, Yokohama National University",
-    imageUrl: profileLink,
+    jobType: "Academician",
+    batch: "01",
+    imageUrl: `${imgLink}aritra_kumar_saha_name01.png`,
   },
   {
     id: 12,
@@ -18,17 +21,8 @@ const allMembers = [
     phone: "1684330519",
     email: "rabab.rahman148@gmail.com",
     workSector: "Analyst, CET, Standard Chartered Bangladesh",
-    imageUrl: profileLink,
-  },
-  {
-    id: 13,
-    studentId: "201324013",
-    name: "Md. Forhad Bhuiyan",
-    gender: "Male",
-    phone: "1840007714",
-    email: "forhad.shurjo2013@gmail.com",
-    workSector: "Civil",
-    imageUrl: profileLink,
+    batch: "01",
+    imageUrl: `${imgLink}RababRaiyaturRahaman_name01.jpg`,
   },
   {
     id: 14,
@@ -38,7 +32,8 @@ const allMembers = [
     phone: "1676259099",
     email: "shohan572@gmail.com",
     workSector: "Marine Surveyor, BV",
-    imageUrl: profileLink,
+    batch: "01",
+    imageUrl: `${imgLink}sakib_ul_alam_name01.png`,
   },
   {
     id: 15,
@@ -48,7 +43,8 @@ const allMembers = [
     phone: "1688414106",
     email: "reyanaislam@gmail.com",
     workSector: "GTA, Yokohama National University",
-    imageUrl: profileLink,
+    batch: "01",
+    imageUrl: `${imgLink}reyana_islam_name01.png`,
   },
   {
     id: 16,
@@ -58,7 +54,8 @@ const allMembers = [
     phone: "1621449494",
     email: "ahsaad7881@yahoo.com",
     workSector: "AD (General), Bangladesh Bank LTD.",
-    imageUrl: profileLink,
+    batch: "01",
+    imageUrl: `${imgLink}AbdullahHisSaad_name01.jpg`,
   },
   {
     id: 17,
@@ -68,7 +65,8 @@ const allMembers = [
     phone: "1676714924",
     email: "rajiaakamol17@gmail.com",
     workSector: "GTA, TU Bergakademie Freiberg",
-    imageUrl: profileLink,
+    batch: "01",
+    imageUrl: `${imgLink}RajiaSultanaKamol_name01.jpg`,
   },
   {
     id: 18,
@@ -77,8 +75,9 @@ const allMembers = [
     gender: "Female",
     phone: "1764623623",
     email: "kanizjulia22@gmail.com",
+    batch: "01",
     workSector: "Naval Engineer, Saipem, France",
-    imageUrl: profileLink,
+    imageUrl: `${imgLink}KanizaFatemaBristy_name01.png`,
   },
   {
     id: 19,
@@ -87,8 +86,9 @@ const allMembers = [
     gender: "Male",
     phone: "1686817033",
     email: "sakibahsan9@gmail.com",
+    batch: "01",
     workSector: "Project Specialist (Marine), Islamic Development Bank",
-    imageUrl: profileLink,
+    imageUrl: defaultProfile,
   },
   {
     id: 20,
@@ -98,7 +98,8 @@ const allMembers = [
     phone: "1773245058",
     email: "hannanazharul1993@gmail.com",
     workSector: "Civil",
-    imageUrl: profileLink,
+    batch: "01",
+    imageUrl: `${imgLink}KaziShakibAhasan_name01.jpg`,
   },
 ];
 
