@@ -44,89 +44,75 @@ const events = [
         <img src="/images/events/1/1.jpg" alt="Flood Relief" class="w-2/3 auto rounded-lg" />
       </div>
     </div>
-  `,
+    `,
   },
-  // {
-  //   _id: "2",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Art Exhibition Opening",
-  //   description:
-  //     "Explore the new art exhibition featuring contemporary artists from around the world. The opening night includes a reception with the artists and live music.",
-  //   eventDate: "2024-09-20T18:00:00Z",
-  // },
-  // {
-  //   _id: "3",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Fitness Workshop",
-  //   description:
-  //     "Participate in a hands-on fitness workshop with professional trainers. Learn new exercises, get tips on nutrition, and meet fellow fitness enthusiasts.",
-  //   eventDate: "2024-11-15T11:00:00Z",
-  // },
-  // {
-  //   _id: "4",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Cooking Class: Italian Cuisine",
-  //   description:
-  //     "Join our cooking class to learn how to prepare delicious Italian dishes. This class is perfect for both beginners and experienced cooks.",
-  //   eventDate: "2024-12-01T14:00:00Z",
-  // },
-  // {
-  //   _id: "5",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Music Festival",
-  //   description:
-  //     "Experience a weekend of live music at our annual music festival. Featuring performances from top bands and artists across various genres.",
-  //   eventDate: "2024-10-25T16:00:00Z",
-  // },
-  // {
-  //   _id: "6",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Tech Conference 2024",
-  //   description:
-  //     "Join us for the annual Tech Conference where industry leaders discuss the latest trends in technology. Don't miss out on insightful talks and networking opportunities.",
-  //   eventDate: "2024-10-05T09:00:00Z",
-  // },
-  // {
-  //   _id: "7",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Art Exhibition Opening",
-  //   description:
-  //     "Explore the new art exhibition featuring contemporary artists from around the world. The opening night includes a reception with the artists and live music.",
-  //   eventDate: "2024-09-20T18:00:00Z",
-  // },
-  // {
-  //   _id: "8",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Fitness Workshop",
-  //   description:
-  //     "Participate in a hands-on fitness workshop with professional trainers. Learn new exercises, get tips on nutrition, and meet fellow fitness enthusiasts.",
-  //   eventDate: "2024-11-15T11:00:00Z",
-  // },
-  // {
-  //   _id: "9",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Cooking Class: Italian Cuisine",
-  //   description:
-  //     "Join our cooking class to learn how to prepare delicious Italian dishes. This class is perfect for both beginners and experienced cooks.",
-  //   eventDate: "2024-12-01T14:00:00Z",
-  // },
-  // {
-  //   _id: "10",
-  //   imageUrl:
-  //     "https://images.pexels.com/photos/145683/pexels-photo-145683.jpeg",
-  //   title: "Music Festival",
-  //   description:
-  //     "Experience a weekend of live music at our annual music festival. Featuring performances from top bands and artists across various genres.",
-  //   eventDate: "2024-10-25T16:00:00Z",
-  // },
+  {
+    _id: "2",
+    imageUrl: "/images/events/2/am_2.jpg",
+    title: "Alumni Meeting 2023",
+    description:
+      "Join the Department of Naval Architecture and Marine Engineering for our annual Alumni Meeting. Reconnect with fellow alumni and faculty while discussing the future of the maritime industry and its challenges.",
+    eventDate: "2023-12-05T10:00:00Z",
+    eventContent: `
+      <div class="">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Alumni Meeting 2023</h1>
+        <p class="text-gray-700 mb-4">The Department of Naval Architecture and Marine Engineering (NAME) plays a pivotal role in advancing maritime technology and creating innovative solutions for naval and marine industries.</p>
+        <p class="text-gray-700 mb-4">The department focuses on the design, construction, maintenance, and operational aspects of marine vessels and structures. Activities range from conceptualizing new ship designs to implementing cutting-edge engineering solutions for marine environments.</p>
+        <h2 class="text-2xl font-semibold text-blue-600 mb-4">Photo Board</h2>
+        <p class="text-gray-700 mb-4">Here are some pictures from the seminar discussing departmental progress in the presence of the Head of the Department and other faculty members.</p>
+        
+        <!-- Image Gallery Section -->
+        <div class="grid grid-cols-2 gap-4 my-8">
+          <div>
+            <img src="/images/events/2/am_1.jpg" alt="Gallery Image 1" class="w-full h-auto rounded-lg" />
+          </div>
+          <div>
+            <img src="/images/events/2/am_2.jpg" alt="Gallery Image 2" class="w-full h-auto rounded-lg" />
+          </div>
+          <div>
+            <img src="/images/events/2/am_3.jpg" alt="Gallery Image 3" class="w-full h-auto rounded-lg" />
+          </div>
+          <div>
+            <img src="/images/events/2/am_4.jpg" alt="Gallery Image 4" class="w-full h-auto rounded-lg" />
+          </div>
+        </div>
+        
+        <h3 class="text-xl font-semibold text-green-600 mb-4">Challenges and Opportunities</h3>
+        <p class="text-gray-700 mb-4">The Department of NAME faces key challenges, including keeping pace with rapid technological advancements and addressing significant environmental concerns, such as reducing the carbon footprint of marine vessels and managing pollution.</p>
+        <p class="text-gray-700 mb-4">However, these challenges present valuable opportunities. The growing emphasis on sustainability creates a fertile ground for research into eco-friendly technologies. Collaborations with industry stakeholders will enhance practical training and facilitate applied research. Global trends, such as smart shipping and automation, offer new avenues for innovation.</p>
+      </div>
+    `,
+  },
+  {
+    _id: "3",
+    imageUrl: "/images/events/3/1.jpg",
+    title: "Industrial Advisory Panel, 4th Meeting",
+    description:
+      "The 4th meeting of the Industrial Advisory Panel will address curriculum development, research advancements, and the future needs of the maritime industry. Join us for insightful discussions and collaboration.",
+    eventDate: "2024-01-20T10:00:00Z",
+    eventContent: `
+      <div class="">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Industrial Advisory Panel, 4th Meeting</h1>
+        <p class="text-gray-700 mb-4">The Department of Naval Architecture and Marine Engineering (NAME) welcomes the 4th meeting of the Industrial Advisory Panel (IAP). This meeting brings together industry professionals and academic leaders to discuss the evolving needs of the maritime industry and how the department can continue to align its curriculum, research, and activities with industry demands.</p>
+        <p class="text-gray-700 mb-4">The IAP plays a crucial role in ensuring that NAME graduates are equipped with the skills and knowledge required in today's fast-changing maritime landscape. Discussions will focus on innovative ship design, sustainable practices, and regulatory challenges.</p>
+        
+        <h3 class="text-xl font-semibold text-green-600 mb-4">Key Topics Discussed</h3>
+        <p class="text-gray-700 mb-4">The meeting covered several important topics:</p>
+        <ul class="list-disc list-inside mb-4 text-gray-700">
+          <li>Curriculum updates to include emerging technologies such as autonomous vessels and AI in maritime operations.</li>
+          <li>Research collaborations on green shipping technologies and alternative fuels.</li>
+          <li>Strengthening industry connections for student internships and job placements.</li>
+          <li>Exploring the impact of new maritime regulations on shipbuilding and design practices.</li>
+        </ul>
+        <p class="text-gray-700 mb-4">The IAP emphasized the importance of fostering innovation, sustainability, and industry-academic collaboration to prepare future engineers for the evolving challenges of the maritime industry.</p>
+  
+        <!-- Single Image at the End -->
+        <div class="text-center my-8">
+          <img src="/images/events/3/1.jpg" alt="Industrial Advisory Panel Meeting" class="w-2/3 mx-auto rounded-lg" />
+        </div>
+      </div>
+    `,
+  },
 ];
 
 function Events() {
