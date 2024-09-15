@@ -1,5 +1,5 @@
 import defaultProfile from "./profileLink";
-const imgLink = "https://203.194.117.77/images/";
+const imgLink = "https://naamist.mist.ac.bd/api";
 const allMembers = [
   {
     id: 11,
