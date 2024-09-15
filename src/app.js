@@ -29,7 +29,7 @@ const middleware = [
 ];
 
 app.use(middleware);
-app.use('/images', express.static('images'));
+app.use('/api/images', express.static('images'));
 
 // Default route
 app.get('/', (req, res) => {
