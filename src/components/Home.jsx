@@ -4,7 +4,6 @@ import { MdEvent, MdSupport } from "react-icons/md"; // Import icons for Events 
 import QuoteSlider from "./Common/QuoteSlider";
 import NameGallery from "./Common/NameGallery";
 
-//test
 function Home() {
   const events = [
     {
