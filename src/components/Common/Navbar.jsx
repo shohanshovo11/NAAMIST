@@ -79,7 +79,7 @@ function Navbar() {
             <>
               <Link
                 to="/profile"
-                className={`relative group py-2 ${
+                className={`relative group ${
                   activePage === "/profile" ? "text-secondary" : "text-black"
                 } transition-colors duration-300`}
                 onClick={() => setActivePage("/profile")}
