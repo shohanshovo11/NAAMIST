@@ -29,7 +29,7 @@ const LogoutContent = () => (
 const AdminDashboard = () => {
   const [selectedKey, setSelectedKey] = useState("dashboard");
 
-  // Menu items configuration
+  // Menu items configuration test
   const menuItems = [
     {
       key: "dashboard",
