@@ -8,7 +8,7 @@ const { Meta } = Card;
 // EventCard Component
 const EventCard = ({
   _id,
-  imageUrl,
+  cardImage,
   title,
   description,
   eventDate,
@@ -18,14 +18,14 @@ const EventCard = ({
   // Format the date object to a readable string
   const formattedDate = format(new Date(eventDate), "MMMM d, yyyy");
   const handleCardClick = () => {
-    navigate(`/event/${_id}`, { state: { eventContent, imageUrl } });
+    navigate(`/event/${_id}`, { state: { eventContent, cardImage } });
   };
   return (
     <Card
       cover={
         <img
           alt={title}
-          src={imageUrl}
+          src={cardImage}
           style={{ height: "200px", objectFit: "cover", objectPosition: "top" }}
         />
       }

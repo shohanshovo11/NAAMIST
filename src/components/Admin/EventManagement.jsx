@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -7,56 +7,22 @@ import {
   Table,
   Space,
   message,
+  Dropdown,
+  Menu,
   Upload,
 } from "antd";
-import ReactQuill, { Quill } from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
-  UploadOutlined,
+  SortAscendingOutlined,
+  SortDescendingOutlined,
 } from "@ant-design/icons";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import Axios from "../../utils/axios";
 
-// Dummy data for events
-const initialEvents = [
-  {
-    _id: "1",
-    imageUrl: "/images/events/1/1.jpg",
-    title: "Fund Raising Campaign for Flood Relief",
-    description:
-      "Join us in supporting the urgent fundraising campaign for flood relief in Bangladesh.",
-    eventDate: "2024-10-05T09:00:00Z",
-    eventContent: "<p>Flood relief campaign details...</p>",
-  },
-  {
-    _id: "1",
-    imageUrl: "/images/events/1/1.jpg",
-    title: "Fund Raising Campaign for Flood Relief",
-    description:
-      "Join us in supporting the urgent fundraising campaign for flood relief in Bangladesh.",
-    eventDate: "2024-10-05T09:00:00Z",
-    eventContent: "<p>Flood relief campaign details...</p>",
-  },
-  {
-    _id: "1",
-    imageUrl: "/images/events/1/1.jpg",
-    title: "Fund Raising Campaign for Flood Relief",
-    description:
-      "Join us in supporting the urgent fundraising campaign for flood relief in Bangladesh.",
-    eventDate: "2024-10-05T09:00:00Z",
-    eventContent: "<p>Flood relief campaign details...</p>",
-  },
-  {
-    _id: "1",
-    imageUrl: "/images/events/1/1.jpg",
-    title: "Fund Raising Campaign for Flood Relief",
-    description:
-      "Join us in supporting the urgent fundraising campaign for flood relief in Bangladesh.",
-    eventDate: "2024-10-05T09:00:00Z",
-    eventContent: "<p>Flood relief campaign details...</p>",
-  },
-];
+const baseUrl = import.meta.env.VITE_IMAGE_URL;
 
 // Toolbar Configuration for Quill
 const modules = {
@@ -67,8 +33,14 @@ const modules = {
       ["bold", "italic", "underline", "strike", "blockquote"],
       [{ list: "ordered" }, { list: "bullet" }],
       ["link", "image"], // Add image button here
+      [{ align: [] }], // Alignment options: left, center, right, justify
       ["clean"],
     ],
+    handlers: {
+      image: () => {
+        document.getElementById("imageUpload").click();
+      },
+    },
   },
 };
 
@@ -85,28 +57,66 @@ const formats = [
   "bullet",
   "link",
   "image",
+  "align", // Enable alignment
 ];
+
+// Function to truncate description
+const truncateDescription = (description, maxLength = 100) => {
+  return description?.length > maxLength
+    ? `${description.substring(0, maxLength)}...`
+    : description;
+};
 
 // Event Management Component
 const EventManagement = () => {
-  const [events, setEvents] = useState(initialEvents);
+  const [events, setEvents] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
+  const [sortOrder, setSortOrder] = useState("desc"); // Sort order state
   const [form] = Form.useForm();
   const [editorContent, setEditorContent] = useState("");
-  const [selectedImages, setSelectedImages] = useState([]);
+  const quillRef = useRef(null); // Reference to Quill editor
+  const [cardImageUrl, setCardImageUrl] = useState("");
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await Axios("/event");
+        setEvents(res.data.events);
+      } catch (e) {
+        console.log("Something went wrong!", e);
+        message.error("Something went wrong!");
+      }
+    };
+    fetchEvents();
+  }, []);
 
   // Function to show modal for creating or editing an event
   const showModal = (event = null) => {
     setIsModalVisible(true);
-    setEditingEvent(event);
-    if (event) {
-      form.setFieldsValue(event);
-      setEditorContent(event.eventContent || "");
-    } else {
-      form.resetFields();
-      setEditorContent("");
-    }
+    console.log(event, "ksl");
+    setTimeout(() => {
+      setEditingEvent(event);
+      if (event) {
+        // Format eventDate to 'YYYY-MM-DD'
+        const formattedDate = event.eventDate
+          ? event.eventDate.split("T")[0]
+          : null;
+
+        // Set the form values, including the formatted date
+        form.setFieldsValue({
+          ...event,
+          eventDate: formattedDate, // Set the formatted date
+        });
+
+        setEditorContent(event.eventContent || "");
+        setCardImageUrl(event.cardImage || ""); // Set existing cardImage URL if editing
+      } else {
+        form.resetFields();
+        setEditorContent("");
+        setCardImageUrl(""); // Clear cardImage URL for new event
+      }
+    }, 100); // Small delay to ensure the modal is fully rendered
   };
 
   // Handle modal cancel
@@ -114,70 +124,143 @@ const EventManagement = () => {
     setIsModalVisible(false);
     setEditingEvent(null);
     form.resetFields();
-    setSelectedImages([]);
+    setCardImageUrl("");
   };
 
   // Handle form submission
-  const handleSubmit = () => {
-    console.log(editorContent, "ssr");
-    form
-      .validateFields()
-      .then((values) => {
-        const newEvent = {
-          ...values,
-          eventContent: editorContent,
-          _id: editingEvent ? editingEvent._id : `${events.length + 1}`,
-        };
+  const handleSubmit = async () => {
+    try {
+      // Validate form fields
+      const values = await form.validateFields();
 
-        if (editingEvent) {
-          // Edit event
-          const updatedEvents = events.map((event) =>
-            event._id === editingEvent._id ? newEvent : event
-          );
-          setEvents(updatedEvents);
-          message.success("Event updated successfully!");
-        } else {
-          // Create event
-          setEvents([...events, newEvent]);
-          message.success("Event created successfully!");
-        }
-
-        setIsModalVisible(false);
-        form.resetFields();
-        setSelectedImages([]);
-      })
-      .catch(() => {
-        message.error("Please fill all the required fields.");
-      });
-  };
-
-  // Handle delete event
-  const handleDelete = (eventId) => {
-    const updatedEvents = events.filter((event) => event._id !== eventId);
-    setEvents(updatedEvents);
-    message.success("Event deleted successfully!");
-  };
-
-  // Insert selected images into the editor
-  const insertImagesToEditor = () => {
-    const quill = Quill.find(document.querySelector(".ql-editor"));
-    selectedImages.forEach((image) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const range = quill.getSelection();
-        quill.insertEmbed(range.index, "image", reader.result);
+      // Check if cardImageUrl exists (ensure image is uploaded)
+      if (!cardImageUrl) {
+        message.error("Please upload a card image.");
+        return;
+      }
+      console.log(editorContent, "kkxks");
+      // Create the new event object, including cardImage URL
+      const newEvent = {
+        ...values,
+        eventContent: editorContent,
+        cardImage: cardImageUrl, // Ensure cardImageUrl is included in submission
       };
-      reader.readAsDataURL(image);
-    });
+      let res;
+      if (editingEvent) {
+        // Edit existing event
+        res = await Axios.put(`/event/${editingEvent._id}`, newEvent);
+        const updatedEvents = events.map((event) =>
+          event._id === editingEvent._id ? res.data : event
+        );
+        setEvents(updatedEvents);
+        message.success("Event updated successfully!");
+      } else {
+        // Create a new event
+        res = await Axios.post("/event", newEvent);
+        setEvents([...events, res.data]);
+        message.success("Event created successfully!");
+      }
+
+      // Close the modal and reset the form
+      setIsModalVisible(false);
+      form.resetFields();
+    } catch (error) {
+      // Handle errors from validation or Axios requests
+      message.error(
+        "Please fill all the required fields or check for server errors."
+      );
+      console.error("Submission error:", error);
+    }
   };
 
-  // Handle image file selection
-  const handleImageUpload = ({ fileList }) => {
-    setSelectedImages(fileList.map((file) => file.originFileObj));
-    console.log(fileList, " shhsr");
+  // Handle image upload and insert image URL into Quill editor
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("img", file); // Adjust based on backend
+
+    try {
+      const response = await Axios.post("/admin/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const imageUrl = response.data.imageUrl;
+      // Get the Quill editor instance from the ref
+      const quill = quillRef.current.getEditor(); // Get Quill instance
+
+      // Insert the image URL into the editor at the current selection
+      const range = quill.getSelection();
+      quill.insertEmbed(range.index, "image", `${baseUrl}/${imageUrl}`);
+    } catch (error) {
+      message.error("Failed to upload image.");
+      console.error(error);
+    }
   };
 
-  // Table columns for event list
+  // Handle card image upload and get the URL
+  const handleCardImageUpload = async ({ file }) => {
+    try {
+      const formData = new FormData();
+      formData.append("img", file);
+
+      // Upload image to server
+      const response = await Axios.post("/admin/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Get the image URL from response and set it
+      const imageUrl = response.data.imageUrl;
+      setCardImageUrl(`${baseUrl}/${imageUrl}`); // Store the uploaded image URL
+      message.success("Image uploaded successfully!");
+    } catch (error) {
+      message.error("Failed to upload image.");
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async (_id) => {
+    try {
+      // Show confirmation message
+      const confirm = window.confirm(
+        "Are you sure you want to delete this event?"
+      );
+      if (!confirm) return;
+
+      // Call Axios to delete the event
+      await Axios.delete(`/event/${_id}`);
+
+      // Remove the deleted event from the state
+      setEvents((prevEvents) =>
+        prevEvents.filter((event) => event._id !== _id)
+      );
+
+      message.success("Event deleted successfully!");
+    } catch (error) {
+      console.error("Delete error:", error);
+      message.error("Failed to delete the event.");
+    }
+  };
+
+  // Sort events based on eventDate and sortOrder
+  const sortedEvents = events?.sort((a, b) => {
+    const dateA = new Date(a.eventDate);
+    const dateB = new Date(b.eventDate);
+
+    if (sortOrder === "asc") {
+      return dateA - dateB;
+    }
+    return dateB - dateA;
+  });
+
+  // Handle sorting toggle
+  const handleSortToggle = () => {
+    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+  };
+
+  // Table columns for displaying event list
   const columns = [
     {
       title: "Title",
@@ -189,6 +272,12 @@ const EventManagement = () => {
       dataIndex: "eventDate",
       key: "eventDate",
       render: (date) => new Date(date).toLocaleDateString(),
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (description) => truncateDescription(description), // Shorten description for display
     },
     {
       title: "Actions",
@@ -228,8 +317,24 @@ const EventManagement = () => {
         Create Event
       </Button>
 
+      {/* Sorting Button */}
+      <Button
+        type="default"
+        icon={
+          sortOrder === "asc" ? (
+            <SortAscendingOutlined />
+          ) : (
+            <SortDescendingOutlined />
+          )
+        }
+        onClick={handleSortToggle}
+        className="mb-4 ml-4"
+      >
+        {sortOrder === "asc" ? "Sort by Oldest" : "Sort by Newest"}
+      </Button>
+
       {/* Event Table */}
-      <Table columns={columns} dataSource={events} rowKey="_id" />
+      <Table columns={columns} dataSource={sortedEvents} rowKey="_id" />
 
       {/* Modal for creating/editing events */}
       <Modal
@@ -241,14 +346,6 @@ const EventManagement = () => {
         footer={[
           <Button key="back" onClick={handleCancel}>
             Cancel
-          </Button>,
-          <Button
-            key="insert"
-            type="primary"
-            onClick={insertImagesToEditor}
-            icon={<UploadOutlined />}
-          >
-            Insert Images
           </Button>,
           <Button key="submit" type="primary" onClick={handleSubmit}>
             {editingEvent ? "Update" : "Create"}
@@ -284,25 +381,42 @@ const EventManagement = () => {
 
           <Form.Item label="Event Content">
             <ReactQuill
+              key={editingEvent ? editingEvent._id : "new"}
+              ref={quillRef} // Attach ref to Quill
               value={editorContent}
               onChange={setEditorContent}
-              placeholder="Enter detailed event content"
               modules={modules}
               formats={formats}
+              placeholder="Enter detailed event content"
             />
           </Form.Item>
 
-          {/* Upload multiple images */}
-          <Form.Item label="Upload Images">
+          <Form.Item label="Card Image">
             <Upload
-              multiple
+              name="cardImage"
               listType="picture"
-              beforeUpload={() => false} // Prevent automatic upload
-              onChange={handleImageUpload}
+              showUploadList={false}
+              customRequest={handleCardImageUpload} // Directly call the upload handler
             >
-              <Button icon={<UploadOutlined />}>Select Images</Button>
+              <Button>Upload Card Image</Button>
             </Upload>
+            {cardImageUrl && (
+              <img
+                src={cardImageUrl}
+                alt="Card"
+                style={{ width: "100px", marginTop: "10px" }}
+              />
+            )}
           </Form.Item>
+
+          {/* Hidden upload input for images */}
+          <input
+            type="file"
+            id="imageUpload"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={(e) => handleImageUpload(e.target.files[0])}
+          />
         </Form>
       </Modal>
     </div>

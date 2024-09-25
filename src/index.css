@@ -46,3 +46,80 @@
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+/* Override Quill's default styles to apply Tailwind classes */
+.ql-editor h1 {
+  @apply text-3xl font-bold;
+}
+
+.ql-editor h2 {
+  @apply text-2xl font-semibold;
+}
+
+.ql-editor p {
+  @apply mb-4 text-base;
+}
+
+.ql-editor blockquote {
+  @apply border-l-4 border-gray-500 pl-4 italic;
+}
+
+.ql-editor ul {
+  @apply list-disc list-inside pl-6;
+}
+
+.ql-editor ol {
+  @apply list-decimal list-inside pl-6;
+}
+
+.ql-editor a {
+  @apply text-blue-500 underline;
+}
+
+.ql-editor img {
+  @apply rounded-lg shadow-lg;
+}
+
+.ql-editor strong {
+  @apply font-bold;
+}
+
+.ql-editor em {
+  @apply italic;
+}
+
+.ql-editor u {
+  @apply underline;
+}
+
+.ql-editor strike {
+  @apply line-through;
+}
+
+.ql-editor pre {
+  @apply bg-gray-200 p-2 rounded;
+}
+
+.ql-editor hr {
+  @apply border-t border-gray-300 my-4;
+}
+.ql-align-center {
+  @apply text-center;
+}
+
+.ql-spacing-small {
+  margin-bottom: 10px;
+}
+
+.ql-spacing-medium {
+  margin-bottom: 20px;
+}
+
+.ql-spacing-large {
+  margin-bottom: 30px;
+}
+.ql-align-center > img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

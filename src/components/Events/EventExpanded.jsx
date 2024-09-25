@@ -136,7 +136,7 @@ function EventExpanded() {
       />
       <div className="max-w-screen-lg my-4 p-8 bg-white shadow-lg rounded-md mx-auto">
         <div
-          className="prose prose-lg"
+          className="prose prose-lg ql-editor"
           dangerouslySetInnerHTML={{ __html: eventContent }}
         />
       </div>

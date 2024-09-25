@@ -2,8 +2,12 @@ import { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { Table, Avatar } from "antd";
 import HeroSection from "./HeroSection";
-import allMembers from "../../utils/data/members";
+// import allMembers from "../../utils/data/members"; // Remove the static data
 import executiveMembers from "../../utils/data/committeeMembers";
+import Axios from "../../utils/axios";
+import defaultProfile from "../../assets/default_profile.png";
+
+const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
 // Filters Component
 const Filters = ({
@@ -85,21 +89,25 @@ const UserCard = ({ user }) => {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <img
-        src={user.imageUrl}
-        alt={user.name}
+        src={
+          user?.profilePic ? `${imgUrl}/${user?.profilePic}` : defaultProfile
+        } // Use a default image if profilePic is not available
+        alt={user?.name}
         className="rounded-full h-40 w-40 object-cover mx-auto"
       />
-      <h2 className="mt-4 text-xl font-semibold text-center">{user.name}</h2>
-      <p className="text-center text-gray-500">Batch: {user.batch}</p>
-      <p className="text-center text-gray-500">Sector: {user.workSector}</p>
+      <h2 className="mt-4 text-xl font-semibold text-center">{user?.name}</h2>
+      <p className="text-center text-gray-500">Batch: {user?.batch}</p>
+      <p className="text-center text-gray-500">
+        Sector: {user?.designation}, {user?.workplace}
+      </p>
       <div className="flex justify-center mt-4 space-x-4">
-        <a href={user.facebook} target="_blank" rel="noopener noreferrer">
+        <a href={user?.facebook} target="_blank" rel="noopener noreferrer">
           <FaFacebook className="text-blue-600 text-xl" />
         </a>
-        <a href={user.twitter} target="_blank" rel="noopener noreferrer">
+        <a href={user?.twitter} target="_blank" rel="noopener noreferrer">
           <FaTwitter className="text-blue-400 text-xl" />
         </a>
-        <a href={user.linkedin} target="_blank" rel="noopener noreferrer">
+        <a href={user?.linkedin} target="_blank" rel="noopener noreferrer">
           <FaLinkedin className="text-blue-700 text-xl" />
         </a>
       </div>
@@ -168,24 +176,45 @@ const ExecutivePanel = () => {
   );
 };
 
-// Members Component with Conditional Rendering
+// Members Component with Conditional Rendering and Backend Fetch
 const Members = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [filter, setFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [workSector, setWorkSector] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false); // Loading state
 
+  // Fetch users from backend API
   useEffect(() => {
-    let filteredUsers = [];
+    const fetchUsers = async () => {
+      setLoading(true); // Start loading
+      try {
+        const response = await Axios("/alumni/get"); // Replace with your actual backend URL
+        console.log(response);
+        const data = await response.data;
+        setUsers(data); // Set the fetched users
+        setLoading(false); // Stop loading
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        setLoading(false); // Stop loading on error
+      }
+    };
 
-    if (filter === "executive") {
-      // No need for pagination in executive panel
-      setUsers(executiveMembers);
+    if (filter === "all") {
+      fetchUsers(); // Fetch users only if the filter is "all"
     } else {
+      setUsers(executiveMembers); // For executive members, use static data
+    }
+  }, [filter]);
+
+  // Separate useEffect for filtering/pagination
+  useEffect(() => {
+    if (filter !== "executive") {
       // Filter all members based on search query and work sector
-      filteredUsers = allMembers.filter(
+      let filtered = users.filter(
         (user) =>
           (workSector === "All" || user.workSectorType === workSector) &&
           (user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -196,15 +225,12 @@ const Members = () => {
       // Pagination logic
       const usersPerPage = 6;
       const startIdx = (currentPage - 1) * usersPerPage;
-      const paginatedUsers = filteredUsers.slice(
-        startIdx,
-        startIdx + usersPerPage
-      );
+      const paginatedUsers = filtered.slice(startIdx, startIdx + usersPerPage);
 
-      setUsers(paginatedUsers);
-      setTotalPages(Math.ceil(filteredUsers.length / usersPerPage));
+      setFilteredUsers(paginatedUsers); // Use a separate state for filtered users
+      setTotalPages(Math.ceil(filtered.length / usersPerPage));
     }
-  }, [currentPage, filter, searchQuery, workSector]);
+  }, [currentPage, filter, searchQuery, workSector, users]);
 
   return (
     <div className="w-full">
@@ -232,12 +258,14 @@ const Members = () => {
           workSector={workSector}
           setWorkSector={setWorkSector}
         />
-        {filter === "executive" ? (
+        {loading ? (
+          <p>Loading...</p> // Display loading state
+        ) : filter === "executive" ? (
           <ExecutivePanel />
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 my-8">
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <UserCard key={user.id} user={user} />
               ))}
             </div>

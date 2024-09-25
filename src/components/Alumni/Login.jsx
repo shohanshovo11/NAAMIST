@@ -22,10 +22,17 @@ const Login = () => {
   const [designation, setDesignation] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
-  const [workSector, setWorkSector] = useState(""); // New Work Sector state
+  const [workSector, setWorkSector] = useState(""); // Work Sector state
+  const [profilePic, setProfilePic] = useState(null); // State for Profile Pic
   const signIn = useSignIn();
   const navigate = useNavigate();
 
+  // Handle profile picture file selection
+  const handleFileChange = (e) => {
+    setProfilePic(e.target.files[0]); // Store the selected file
+  };
+
+  // Form submission handler
   const submitHandler = async () => {
     try {
       if (isRegister) {
@@ -34,22 +41,29 @@ const Login = () => {
           console.error("Passwords do not match.");
           return;
         }
-        const response = await Axios.post("/auth/register", {
-          name,
-          email,
-          password,
-          studentId,
-          batch,
-          enrollmentYear,
-          completionYear,
-          mobileNumber,
-          currentWorkplace,
-          designation,
-          facebookLink,
-          linkedinLink,
-          workSector, // Include workSector in the registration data
-          role: "alumni",
+        // Create FormData and append all form fields including profilePic
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("studentID", studentId);
+        formData.append("batch", batch);
+        formData.append("enrollmentYear", enrollmentYear);
+        formData.append("completionYear", completionYear);
+        formData.append("mobile", mobileNumber);
+        formData.append("workplace", currentWorkplace);
+        formData.append("designation", designation);
+        formData.append("facebook", facebookLink);
+        formData.append("linkedin", linkedinLink);
+        formData.append("workSectorType", workSector);
+        formData.append("isAuthorized", false);
+        if (profilePic) formData.append("profilePic", profilePic);
+        const response = await Axios.post("/auth/register", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
+
         console.log("Registration successful:", response.data);
         setIsRegister(false);
       } else {
@@ -59,6 +73,7 @@ const Login = () => {
           password,
           role: "alumni",
         });
+        console.log(response, "shohs");
         const { token, role, user } = response.data;
         const success = signIn({
           token,
@@ -112,12 +127,15 @@ const Login = () => {
         </button>
       </div>
 
-      {/* Right Column */}
-      <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-center p-10">
+      {/* Right Column with scrollable registration content */}
+      <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-center p-10 overflow-y-auto max-h-screen">
         {isRegister ? (
           <>
-            <h2 className="text-3xl font-semibold mb-6">Register as Alumni</h2>
+            <h2 className="text-3xl font-semibold mb-6 mt-16">
+              Register as Alumni
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-xl">
+              {/* Form fields */}
               <input
                 type="text"
                 value={name}
@@ -206,11 +224,21 @@ const Login = () => {
                   </option>
                   <option value="Higher Study">Higher Study</option>
                   <option value="Government">Government</option>
-                  <option value="Higher Study">Defence</option>
+                  <option value="Defence">Defence</option>
                   <option value="Private">Private Sector</option>
+                  <option value="Academician">Academician</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
+
+              {/* Profile Picture Upload */}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+
               <div className="relative col-span-1 md:col-span-2">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -278,14 +306,6 @@ const Login = () => {
         >
           {isRegister ? "Register" : "Sign In"}
         </button>
-        {/* {!isRegister && (
-          <button
-            onClick={() => console.log("Login with Google")}
-            className="bg-red-500 text-white w-full max-w-sm py-3 rounded-lg mt-3 hover:bg-red-600 transition duration-300"
-          >
-            Login with Google
-          </button>
-        )} */}
       </div>
     </div>
   );

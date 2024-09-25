@@ -55,7 +55,7 @@ function HeroSlider() {
                   <p className="text-sm sm:text-lg md:text-2xl font-sans font-extralight mb-2 sm:mb-4">
                     {item.description}
                   </p>
-                  <Link to={"/authorization"}>
+                  <Link to={"/authentication"}>
                     <button className="bg-secondary text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-lg transition-transform transform hover:scale-105 hover:opacity-90">
                       Get Connected
                     </button>

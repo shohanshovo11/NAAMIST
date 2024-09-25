@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   Button,
@@ -19,37 +19,6 @@ import {
 } from "@ant-design/icons";
 import Axios from "../../utils/axios";
 
-// Dummy data for the alumni
-const initialAlumniData = [
-  {
-    key: "1",
-    name: "John Doe",
-    email: "john.doe@example.com",
-    mobile: "01712345678",
-    enrollmentYear: 2015,
-    completionYear: 2019,
-    studentID: 202114094,
-    batch: 2015,
-    workplace: "ABC Corp",
-    designation: "Engineer",
-    isAuthorized: true,
-    profilePic: "",
-  },
-  {
-    key: "2",
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    mobile: "01987654321",
-    enrollmentYear: 2016,
-    completionYear: 2020,
-    studentID: 202114001,
-    batch: 2016,
-    workplace: "XYZ Ltd",
-    designation: "Analyst",
-    isAuthorized: false,
-    profilePic: "",
-  },
-];
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
 // Add/Edit Alumni Form
 const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
@@ -190,7 +159,7 @@ const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
           <Upload
             listType="picture"
             fileList={fileList}
-            beforeUpload={() => false} // Prevent automatic upload
+            beforeUpload={() => false}
             onChange={handleUploadChange}
           >
             <Button icon={<UploadOutlined />}>Browse</Button>
@@ -203,7 +172,7 @@ const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
 
 // Main Alumni Management Component
 const AlumniManagement = () => {
-  const [alumniData, setAlumniData] = useState(initialAlumniData);
+  const [alumniData, setAlumniData] = useState();
   const [visible, setVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState(null);
@@ -211,9 +180,40 @@ const AlumniManagement = () => {
   const [filterStatus, setFilterStatus] = useState("all"); // State for tracking selected filter
   const [searchText, setSearchText] = useState(""); // Search text state
 
+  const fetchAlumniData = async () => {
+    try {
+      const response = await Axios.get("/alumni"); // Adjust the endpoint to match your backend
+      console.log(response, "jjl");
+      setAlumniData(response.data); // Set the fetched data
+      setFilteredAlumni(response.data); // Initialize filtered data with fetched data
+    } catch (error) {
+      console.error("Error fetching alumni data:", error);
+      message.error("Failed to load alumni data");
+    }
+  };
+
+  // Fetch alumni data when the component mounts
+  useEffect(() => {
+    fetchAlumniData();
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  useEffect(() => {
+    if (filterStatus === "approved") {
+      setFilteredAlumni(
+        alumniData.filter((alumni) => alumni.isAuthorized === true)
+      );
+    } else if (filterStatus === "unapproved") {
+      setFilteredAlumni(
+        alumniData.filter((alumni) => alumni.isAuthorized === false)
+      );
+    } else {
+      setFilteredAlumni(alumniData);
+    }
+  }, [alumniData, filterStatus]);
+
   // Extract unique values for filters
   const getUniqueValues = (key) => {
-    return [...new Set(alumniData.map((item) => item[key]))].map((value) => ({
+    return [...new Set(alumniData?.map((item) => item[key]))]?.map((value) => ({
       text: String(value),
       value: value,
     }));
@@ -261,7 +261,7 @@ const AlumniManagement = () => {
       render: (profilePic) =>
         profilePic ? (
           <img
-            src={`${imageUrl}/images/${profilePic}`}
+            src={`${imageUrl}/${profilePic}`}
             alt="Profile"
             style={{ width: 50, height: 50, borderRadius: "50%" }}
           />
@@ -318,7 +318,7 @@ const AlumniManagement = () => {
         ) : (
           <Popconfirm
             title="Are you sure to approve this alumni?"
-            onConfirm={() => handleApprove(record.key)}
+            onConfirm={() => handleApprove(record._id)}
             okText="Yes"
             cancelText="No"
           >
@@ -341,7 +341,7 @@ const AlumniManagement = () => {
           />
           <Popconfirm
             title="Are you sure to delete this alumni?"
-            onConfirm={() => handleDelete(record.key)}
+            onConfirm={() => handleDelete(record._id)}
             okText="Yes"
             cancelText="No"
           >
@@ -360,23 +360,23 @@ const AlumniManagement = () => {
     try {
       // Append isAuthorized field to formData
       formData.append("isAuthorized", true);
-  
+
       const res = await Axios.post("/auth/register", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-  
+
       if (res.status === 201) {
         const newAlumni = res.data.alumni;
         const updatedAlumniData = [
           ...alumniData,
           { ...newAlumni, key: newAlumni._id },
         ];
-  
+
         setAlumniData(updatedAlumniData);
         setFilteredAlumni(updatedAlumniData);
-        
+
         // Show success message that disappears after 2 seconds
         message.success("Alumni added successfully!", 2);
         setVisible(false);
@@ -386,42 +386,93 @@ const AlumniManagement = () => {
       message.error("Error adding alumni", 2);
     }
   };
-  
-  const handleApprove = (key) => {
+
+  const handleApprove = async (id) => {
     const updatedAlumniData = alumniData.map((alumni) =>
-      alumni.key === key ? { ...alumni, isAuthorized: true } : alumni
+      alumni._id === id ? { ...alumni, isAuthorized: true } : alumni
     );
+    try {
+      const res = await Axios.post(`/alumni//approve/${id}`);
+      if (res.status === 200) {
+        console.log("User approved successfully");
+        message.success("Alumni approved successfully!", 2);
+      }
+    } catch (e) {
+      message.error("Sorry! Could not approve", 2);
+      return;
+    }
     setAlumniData(updatedAlumniData);
-    message.success("Alumni approved successfully!", 2); // 2 seconds duration
-    filterAlumniByApproval(filterStatus); // Keep the current filter after approval
+    setFilteredAlumni(updatedAlumniData);
+    filterAlumniByApproval(filterStatus);
   };
-  
-  const handleDelete = (key) => {
-    const updatedAlumniData = alumniData.filter((alumni) => alumni.key !== key);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await Axios.delete(`/alumni/delete/${id}`);
+      if (res.status === 200) {
+        message.success("Alumni deleted successfully!", 2);
+      } else {
+        message.error("Error Occurred!");
+        return;
+      }
+    } catch (err) {
+      message.error("Alumni not deleted");
+      return;
+    }
+    const updatedAlumniData = alumniData.filter((alumni) => alumni._id !== id);
     setAlumniData(updatedAlumniData);
-    message.success("Alumni deleted successfully!", 2); // 2 seconds duration
-    setFilteredAlumni(updatedAlumniData); // Update filtered data as well
+    setFilteredAlumni(updatedAlumniData);
   };
-  
 
   // Handle editing alumni
   const handleEdit = (record) => {
     setSelectedAlumni(record);
-    setEditVisible(true); // Open the modal in edit mode
+    setEditVisible(true);
   };
 
   // Update alumni information
-  const handleUpdate = (updatedAlumni) => {
-    const updatedData = alumniData.map((alumni) =>
-      alumni.key === selectedAlumni.key
-        ? { ...selectedAlumni, ...updatedAlumni }
-        : alumni
-    );
-    setAlumniData(updatedData);
-    setFilteredAlumni(updatedData);
-    message.success("Alumni updated successfully!");
-    setEditVisible(false); // Close the edit modal
+  const handleUpdate = async (formData) => {
+    try {
+      // Log all key-value pairs in FormData
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+  
+      // Send the updated data to the backend
+      const res = await Axios.put(
+        `/alumni/update/${selectedAlumni._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      if (res.status === 200) {
+        const updatedAlumni = res.data;
+        console.log(updatedAlumni, "Updated Alumni");
+  
+        // Ensure you're creating a new array reference to trigger React re-render
+        const updatedData = alumniData.map((alumni) =>
+          alumni._id === updatedAlumni._id ? updatedAlumni : alumni
+        );
+  
+        // Use spread operator to create a new array
+        setAlumniData([...updatedData]);
+        setFilteredAlumni([...updatedData]);
+  
+        message.success("Alumni updated successfully!");
+        setEditVisible(false); // Close the edit modal
+      } else {
+        message.error("Error updating alumni.");
+      }
+    } catch (error) {
+      message.error("Failed to update alumni.");
+      console.error(error); // Log the error for debugging
+    }
   };
+  
 
   return (
     <div>
@@ -483,7 +534,7 @@ const AlumniManagement = () => {
       </Button>
 
       {/* Alumni Management Table */}
-      <Table columns={columns} dataSource={filteredAlumni} />
+      <Table columns={columns} dataSource={filteredAlumni} rowKey="_id" />
 
       {/* Modal to add/edit alumni */}
       <AlumniForm
