@@ -1,9 +1,54 @@
 import HeroSection from "../Common/HeroSection";
 import erganogram from "../../assets/erganogram.png";
+import { Helmet } from "react-helmet-async";
 
 const AboutUs = () => {
   return (
     <>
+      <Helmet>
+        <title>About Us - NAAMIST | NAME Alumni Association of MIST</title>
+        <meta
+          name="description"
+          content="Learn about NAAMIST, the NAME Alumni Association of MIST. Connect with a global network of MIST NAME alumni, discover our mission, and get involved."
+        />
+        <meta
+          name="keywords"
+          content="MIST NAME Alumni, NAAMIST, Naval Architecture and Marine Engineering, MIST Alumni Network, Alumni Bond, Military Institute of Science and Technology, Alumni Association"
+        />
+        <meta
+          property="og:title"
+          content="About Us - NAAMIST | NAME Alumni Association of MIST"
+        />
+        <meta
+          property="og:description"
+          content="NAAMIST promotes the interests, welfare, and educational aims of MIST alumni, establishing a lifetime bond with the university."
+        />
+        <meta
+          property="og:image"
+          content="https://mist.ac.bd/storage/photos/name/10-1024x683.jpg"
+        />
+        <meta
+          property="og:url"
+          content="https://www.namealumnimist.com/about"
+        />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="About Us - NAAMIST | NAME Alumni Association of MIST"
+        />
+        <meta
+          name="twitter:description"
+          content="Learn about NAAMIST, the NAME Alumni Association of MIST. Discover our mission, and get involved with the global alumni network."
+        />
+        <meta
+          name="twitter:image"
+          content="https://mist.ac.bd/storage/photos/name/10-1024x683.jpg"
+        />
+
+        {/* Canonical Link */}
+        <link rel="canonical" href="/about-us" />
+      </Helmet>
       <HeroSection
         imageUrl={"https://mist.ac.bd/storage/photos/name/10-1024x683.jpg"}
         title={"About Us"}

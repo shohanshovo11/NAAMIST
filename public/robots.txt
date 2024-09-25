@@ -1,0 +1,4 @@
+Disallow: /admin
+Disallow: /admin/login
+Disallow: /admin/dashboard
+Disallow: /admin/*

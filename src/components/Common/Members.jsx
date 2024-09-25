@@ -6,6 +6,7 @@ import HeroSection from "./HeroSection";
 import executiveMembers from "../../utils/data/committeeMembers";
 import Axios from "../../utils/axios";
 import defaultProfile from "../../assets/default_profile.png";
+import { Helmet } from "react-helmet-async";
 
 const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
@@ -233,71 +234,120 @@ const Members = () => {
   }, [currentPage, filter, searchQuery, workSector, users]);
 
   return (
-    <div className="w-full">
-      {filter === "executive" ? (
-        <HeroSection
-          title={"Panel Members"}
-          imageUrl={
-            "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-          }
+    <>
+      <Helmet>
+        <title>Members - NAME Alumni Network</title>
+        <meta
+          name="description"
+          content="Browse the exclusive network of NAAMIST members, including executive committee members and alumni of the Naval Architecture and Marine Engineering department at MIST."
         />
-      ) : (
-        <HeroSection
-          title={"All Members"}
-          imageUrl={
-            "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-          }
+        <meta
+          name="keywords"
+          content="NAAMIST members, NAME alumni, Naval Architecture and Marine Engineering, MIST NAME alumni, Alumni Network, Committee Members, NAME Alumni Directory, Alumni of MIST"
         />
-      )}
-      <div className="max-w-screen-xl mx-auto p-4">
-        <Filters
-          filter={filter}
-          setFilter={setFilter}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          workSector={workSector}
-          setWorkSector={setWorkSector}
+
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Members - NAME Alumni Network" />
+        <meta
+          property="og:description"
+          content="Explore the members of the NAME Alumni Association of MIST and connect with professionals across different sectors."
         />
-        {loading ? (
-          <p>Loading...</p> // Display loading state
-        ) : filter === "executive" ? (
-          <ExecutivePanel />
+        <meta
+          property="og:image"
+          content="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        />
+        <meta
+          property="og:url"
+          content="https://www.namealumnimist.com/members"
+        />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="NAAMIST Members - NAME Alumni Network"
+        />
+        <meta
+          name="twitter:description"
+          content="Discover the members of the NAME Alumni Association of MIST and connect with professionals from around the globe."
+        />
+        <meta
+          name="twitter:image"
+          content="https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        />
+
+        {/* Canonical Link */}
+        <link rel="canonical" href="https://www.namealumnimist.com/members" />
+      </Helmet>
+      <div className="w-full">
+        {filter === "executive" ? (
+          <HeroSection
+            title={"Panel Members"}
+            imageUrl={
+              "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            }
+          />
         ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 my-8">
-              {filteredUsers.map((user) => (
-                <UserCard key={user.id} user={user} />
-              ))}
-            </div>
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-                className={`px-4 py-2 mx-2 rounded-md shadow-md ${
-                  currentPage === 1 ? "bg-gray-300" : "bg-primary text-white"
-                }`}
-              >
-                Previous
-              </button>
-              <span className="px-4 py-2">{`Page ${currentPage} of ${totalPages}`}</span>
-              <button
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                disabled={currentPage === totalPages}
-                className={`px-4 py-2 mx-2 rounded-md shadow-md ${
-                  currentPage === totalPages
-                    ? "bg-gray-300"
-                    : "bg-primary text-white"
-                }`}
-              >
-                Next
-              </button>
-            </div>
-          </>
+          <HeroSection
+            title={"All Members"}
+            imageUrl={
+              "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            }
+          />
         )}
+        <div className="max-w-screen-xl mx-auto p-4">
+          <Filters
+            filter={filter}
+            setFilter={setFilter}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            workSector={workSector}
+            setWorkSector={setWorkSector}
+          />
+          {loading ? (
+            <p>Loading...</p> // Display loading state
+          ) : filter === "executive" ? (
+            <ExecutivePanel />
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 my-8">
+                {filteredUsers.map((user) => (
+                  <UserCard key={user.id} user={user} />
+                ))}
+              </div>
+              <div className="flex justify-center mt-8">
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className={`px-4 py-2 mx-2 rounded-md shadow-md ${
+                    currentPage === 1 ? "bg-gray-300" : "bg-primary text-white"
+                  }`}
+                >
+                  Previous
+                </button>
+                <span className="px-4 py-2">{`Page ${currentPage} of ${totalPages}`}</span>
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className={`px-4 py-2 mx-2 rounded-md shadow-md ${
+                    currentPage === totalPages
+                      ? "bg-gray-300"
+                      : "bg-primary text-white"
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

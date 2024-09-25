@@ -1,109 +1,12 @@
 import HeroSlider from "./Common/HeroSlider";
-import { GiGraduateCap } from "react-icons/gi";
-import { MdEvent, MdSupport } from "react-icons/md"; // Import icons for Events and Support
 import QuoteSlider from "./Common/QuoteSlider";
 import NameGallery from "./Common/NameGallery";
 import { useEffect, useState } from "react";
 import Axios from "../utils/axios";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 function Home() {
-  // const events = [
-  //   {
-  //     title: "Donation for Flood Affected People",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "We always stand for the country, for the people. Whenever needed.",
-  //     image: "/images/events/1/1.jpg",
-  //   },
-  //   {
-  //     title: "Industrial Advisory Panel, 4th Meeting",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "The 4th meeting of the Industrial Advisory Panel will address curriculum development, research advancements, and the future needs of the maritime industry. Join us for insightful discussions and collaboration.",
-  //     image: "/images/events/3/1.jpg",
-  //   },
-  //   {
-  //     title: "CAREER TALK Session with NAME-8",
-  //     date: new Date("2024-03-03"),
-  //     shortDescription:
-  //       "Our newly formed NAME Alumni Association of MIST (NAAMIST) arranged a 'CAREER TALK' session with our recent graduating batch NAME-8. We are thankful to everyone who joined us physically and virtually (Shad Karim, Hironmoy Ahmad, Ruhan Ràbbí) to share their experiences and journey after graduation. More programs like this will be arranged in the future to engage each other and create value in the maritime industry.",
-  //     image: "/images/events/4/1.jpg",
-  //   },
-  //   {
-  //     title: "NAME Alumni Reunion",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Join us for the annual NAME Alumni Reunion at MIST in Dhaka. Reconnect with classmates, meet fellow alumni, and celebrate the NAME community.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Networking Event",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Connect with NAME alumni from around the world at our virtual networking event. Share your experiences, exchange ideas, and build new relationships.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Fundraiser",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Support the NAME Alumni Association of MIST by participating in our annual fundraiser. Your donations help fund scholarships, research, and other initiatives.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Reunion",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Join us for the annual NAME Alumni Reunion at MIST in Dhaka. Reconnect with classmates, meet fellow alumni, and celebrate the NAME community.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Networking Event",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Connect with NAME alumni from around the world at our virtual networking event. Share your experiences, exchange ideas, and build new relationships.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Fundraiser",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Support the NAME Alumni Association of MIST by participating in our annual fundraiser. Your donations help fund scholarships, research, and other initiatives.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Reunion",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Join us for the annual NAME Alumni Reunion at MIST in Dhaka. Reconnect with classmates, meet fellow alumni, and celebrate the NAME community.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Networking Event",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Connect with NAME alumni from around the world at our virtual networking event. Share your experiences, exchange ideas, and build new relationships.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  //   {
-  //     title: "NAME Alumni Fundraiser",
-  //     date: Date.now(),
-  //     shortDescription:
-  //       "Support the NAME Alumni Association of MIST by participating in our annual fundraiser. Your donations help fund scholarships, research, and other initiatives.",
-  //     image:
-  //       "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //   },
-  // ];
-
   const announcements = [
     {
       title: 'CALL FOR ARTICLES – "THE SAIL-2020 (5TH EDITION)"',
@@ -127,15 +30,13 @@ function Home() {
 
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  // const [announcements, setAnnouncements] = useState([]);
 
-  // Fetch events from the API
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await Axios("/event/latest"); // Replace with your actual API endpoint
+        const response = await Axios("/event/latest");
         console.log(response.data.events);
-        setEvents(response.data.events); // Assuming the API response contains events in the 'events' field
+        setEvents(response.data.events);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
@@ -152,6 +53,40 @@ function Home() {
 
   return (
     <>
+      <Helmet>
+        <title>NAAMIST - NAME Alumni Association of MIST</title>
+        <meta
+          name="description"
+          content="The NAME Alumni Association of MIST brings together alumni from the Naval Architecture and Marine Engineering department. Connect, network, and stay informed about the latest events and announcements."
+        />
+        <meta
+          name="keywords"
+          content="NAME Alumni, NAME MIST, Alumni Association, Naval Architecture and Marine Engineering, MIST NAME, Alumni Network, Alumni Reunion, Alumni Events, MIST Events"
+        />
+        <meta
+          property="og:title"
+          content="NAAMIST - NAME Alumni Association of MIST"
+        />
+        <meta
+          property="og:description"
+          content="Join the NAME Alumni Association of MIST to connect with fellow alumni, attend events, and grow your professional network."
+        />
+        <meta property="og:image" content="/images/announcements/SAIL.png" />
+        <meta property="og:url" content="https://www.namealumnimist.com" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="NAAMIST - NAME Alumni Association of MIST"
+        />
+        <meta
+          name="twitter:description"
+          content="Connect with alumni of the Naval Architecture and Marine Engineering department at MIST. Stay updated on events, reunions, and opportunities."
+        />
+        <meta name="twitter:image" content="/images/announcements/SAIL.png" />
+        <link rel="canonical" href="https://naamist.mist.ac.bd/" />
+      </Helmet>
+
       <HeroSlider />
       <div className="container mx-auto px-4 py-8">
         <div className="md:w-2/3 md:mx-auto">
@@ -172,13 +107,11 @@ function Home() {
         </div>
       </div>
 
-      {/* Improved Latest Events and Announcements Section */}
       <div className="container mx-auto md:px-4 md:py-8 mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-primary">
           What's Happening
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Latest Events Section */}
           <div className="bg-white md:shadow-lg rounded-lg p-6">
             <h3 className="text-xl md:text-2xl font-bold text-primary mb-4">
               Latest Events
@@ -222,7 +155,6 @@ function Home() {
             </div>
           </div>
 
-          {/* Announcements Section */}
           <div className="bg-white md:shadow-lg rounded-lg p-6">
             <h3 className="text-xl md:text-2xl font-bold text-primary mb-4">
               Announcements

@@ -5,6 +5,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "react-auth-kit";
 import createStore from "react-auth-kit/createStore";
+import { HelmetProvider } from "react-helmet-async";
 
 const store = createStore({
   authName: "_auth",
@@ -17,7 +18,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider store={store}>
       <BrowserRouter>
-        <App />
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </BrowserRouter>
     </AuthProvider>
   </StrictMode>

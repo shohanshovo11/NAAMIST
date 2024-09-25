@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import HeroSection from "../Common/HeroSection";
 import EventCard from "./EventCard";
 import Axios from "../../utils/axios";
+import { Helmet } from "react-helmet-async"; // Import Helmet for SEO
 
 function Events() {
   const [events, setEvents] = useState([]);
@@ -46,6 +47,46 @@ function Events() {
 
   return (
     <>
+      <Helmet>
+        <title>{`Events - Page ${currentPage} | NAAMIST`}</title>
+        <meta
+          name="description"
+          content={`Browse upcoming and past events at NAAMIST. Page ${currentPage} of events including alumni gatherings, reunions, and professional development sessions.`}
+        />
+        <meta
+          name="keywords"
+          content={`NAAMIST events, alumni events, NAME alumni, MIST events, page ${currentPage}`}
+        />
+        <meta
+          property="og:title"
+          content={`Events - Page ${currentPage} | NAAMIST`}
+        />
+        <meta
+          property="og:description"
+          content={`Check out the latest events hosted by the NAME Alumni Association of MIST. View alumni gatherings, professional events, and reunions. Currently viewing page ${currentPage}.`}
+        />
+        <meta
+          property="og:image"
+          content="https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        />
+        <meta property="og:url" content={`https://naamist.mist.ac.bd/events`} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`Events - Page ${currentPage} | NAAMIST`}
+        />
+        <meta
+          name="twitter:description"
+          content={`Explore the latest events by NAAMIST, including reunions and alumni gatherings. Viewing events on page ${currentPage}.`}
+        />
+        <meta
+          name="twitter:image"
+          content="https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+        />
+        <link rel="canonical" href={`/events`} />
+      </Helmet>
+
       <HeroSection
         imageUrl={
           "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"

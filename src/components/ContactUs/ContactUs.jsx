@@ -1,8 +1,48 @@
+import { Helmet } from "react-helmet-async";
 import HeroSection from "../Common/HeroSection";
 
 const ContactUs = () => {
   return (
     <>
+      <Helmet>
+        <title>Contact Us - NAAMIST</title>
+        <meta
+          name="description"
+          content="Get in touch with the NAME Alumni Association of MIST. Fill out the feedback form or find our location on the map."
+        />
+        <meta
+          name="keywords"
+          content="contact NAAMIST, contact NAME Alumni, MIST contact, alumni association contact, NAME MIST"
+        />
+
+        {/* Open Graph Meta Tags */}
+        <meta property="og:title" content="Contact Us - NAAMIST" />
+        <meta
+          property="og:description"
+          content="Reach out to the NAME Alumni Association of MIST for any inquiries or feedback. Find our location or send us a message."
+        />
+        <meta
+          property="og:image"
+          content="https://plus.unsplash.com/premium_photo-1675842663249-a8b70103dbaa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        />
+        <meta property="og:url" content="/contact-us" />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Meta Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us - NAAMIST" />
+        <meta
+          name="twitter:description"
+          content="Send feedback or inquiries to the NAME Alumni Association of MIST. Find our location or leave a message."
+        />
+        <meta
+          name="twitter:image"
+          content="https://plus.unsplash.com/premium_photo-1675842663249-a8b70103dbaa?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        />
+
+        {/* Canonical Link */}
+        <link rel="canonical" href="/contact-us" />
+      </Helmet>
       <HeroSection
         title={"Contact Us"}
         imageUrl={
