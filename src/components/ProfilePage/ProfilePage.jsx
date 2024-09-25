@@ -7,7 +7,7 @@ import Axios from "../../utils/axios";
 import { message } from "antd";
 
 const imgLink = import.meta.env.VITE_IMAGE_URL;
-
+console.log(imgLink, "kkkj");
 const ProfilePage = () => {
   const auth = useAuthUser();
   const isAuthenticated = useIsAuthenticated();
