@@ -39,10 +39,19 @@ const alumniSchema = new mongoose.Schema({
   mobile: {
     type: String,
     required: true,
-    match: /^01\d{9}$/, // Bangladesh mobile number validation
+    match: /^(?:\+8801|01)\d{9}$/, // Bangladesh mobile number validation (supports both +8801 and 01)
   },
   workplace: {
     type: String,
+  },
+  workSectorType: {
+    type: String,
+    enum: [ 'Government',
+      'Private',
+      'Higher Study',
+      'Defence',
+      'Academician',
+      'Others', ]
   },
   designation: {
     type: String,

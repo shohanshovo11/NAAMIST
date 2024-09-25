@@ -10,11 +10,11 @@ const generateToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET, { e
 const registerAlumni = async (req, res) => {
   const {
     name, email, password, enrollmentYear, completionYear,
-    studentID, batch, mobile, workplace, designation, facebook, linkedin, isAuthorized,
+    studentID, batch, mobile, workplace,
+    designation, facebook, linkedin, isAuthorized, workSectorType
   } = req.body;
 
   try {
-    console.log('hello world');
     const existingAlumni = await Alumni.findOne({ email });
     if (existingAlumni) {
       return res.status(400).json({ message: 'Email already registered' });
@@ -22,11 +22,23 @@ const registerAlumni = async (req, res) => {
 
     // Access the uploaded file
     const profilePic = req.file ? req.file.filename : null;
-    console.log(profilePic, studentID, 'sssh');
-
-    // Hash the password before saving
-    // const hashedPassword = bcrypt.hashSync(password, 10);
-
+    console.log(
+      name,
+      email,
+      password,
+      enrollmentYear,
+      completionYear,
+      studentID,
+      batch,
+      mobile,
+      workplace,
+      designation,
+      facebook,
+      linkedin,
+      isAuthorized,
+      workSectorType,
+      'kkk'
+    );
     // Create the new alumni
     const newAlumni = new Alumni({
       name,
@@ -43,8 +55,8 @@ const registerAlumni = async (req, res) => {
       linkedin,
       isAuthorized,
       profilePic,
+      workSectorType
     });
-    console.log('coming');
     await newAlumni.save();
 
     // Remove password from the saved alumni object
@@ -63,6 +75,7 @@ const login = async (req, res) => {
 
   try {
     let user;
+
     // Determine which model to use based on the role
     if (role === 'alumni') {
       user = await Alumni.findOne({ email });
@@ -71,12 +84,20 @@ const login = async (req, res) => {
     } else {
       return res.status(400).json({ message: 'Invalid role specified' });
     }
+
+    // Check if user exists
     if (!user) {
       return res.status(401).json({ message: 'User not found.' });
     }
 
+    // Check if the user is authorized
+    if (user.isAuthorized === false) {
+      return res.status(403).json({ message: 'Your account is not authorized yet. Please contact admin.' });
+    }
+
     // Compare hashed password
-    if (!bcrypt.compareSync(password, user.password)) {
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
+    if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
@@ -95,7 +116,7 @@ const login = async (req, res) => {
     res.status(200).json({ token, user: userObj, role });
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({ message: 'An error occurred' });
+    res.status(500).json({ message: 'An error occurred during login' });
   }
 };
 
