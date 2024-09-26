@@ -6,6 +6,7 @@ const {
   createAnnouncement,
   updateAnnouncement,
   deleteAnnouncement,
+  getPaginatedAnnouncement,
 } = require('../controllers/announcementController');
 const upload = require('../middleware/uploadAnnouncement'); // Import the multer configuration
 
@@ -13,6 +14,7 @@ const router = express.Router();
 
 // CRUD routes
 router.get('/', getAllAnnouncements); // Get all announcements
+router.get('/paginated', getPaginatedAnnouncement); // Get all announcements
 router.get('/:id', getAnnouncementById); // Get announcement by ID
 router.post('/', upload.single('announcementImg'), createAnnouncement); // Create a new announcement with image upload
 router.put('/:id', upload.single('announcementImg'), updateAnnouncement); // Update an announcement with image upload

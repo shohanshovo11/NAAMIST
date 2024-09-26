@@ -1,4 +1,3 @@
-// Announcement Model
 const mongoose = require('mongoose');
 
 const announcementSchema = new mongoose.Schema({
@@ -16,11 +15,15 @@ const announcementSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: '',
+    default: null,
   },
   link: {
     type: String,
     default: '',
+  },
+  isApproved: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -12,6 +12,33 @@ module.exports.getAllAnnouncements = async (req, res) => {
   }
 };
 
+// Get all announcements with pagination
+module.exports.getPaginatedAnnouncement = async (req, res) => {
+  const { page = 1, limit = 5 } = req.query;
+  const pageNumber = parseInt(page);
+  const limitNumber = parseInt(limit);
+
+  try {
+    // Find approved announcements with pagination and sort by date in descending order
+    const announcements = await Announcement.find({ isApproved: true })
+      .sort({ date: -1 }) // Sort by date in descending order
+      .skip((pageNumber - 1) * limitNumber)
+      .limit(limitNumber);
+
+    // Get total count of approved announcements for pagination calculation
+    const totalAnnouncements = await Announcement.countDocuments({ isApproved: true });
+
+    res.json({
+      success: true,
+      data: announcements,
+      totalPages: Math.ceil(totalAnnouncements / limitNumber),
+      currentPage: pageNumber,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server Error', error });
+  }
+};
+
 // Get announcement by ID
 module.exports.getAnnouncementById = async (req, res) => {
   try {
