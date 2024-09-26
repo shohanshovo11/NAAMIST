@@ -5,45 +5,36 @@ import { useEffect, useState } from "react";
 import Axios from "../utils/axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import defaultAnnouncement from "/images/announcement.png";
+import { message } from "antd";
+const baseUrl = import.meta.env.VITE_IMAGE_URL;
 
-// test
 function Home() {
-  const announcements = [
-    {
-      title: 'CALL FOR ARTICLES – "THE SAIL-2020 (5TH EDITION)"',
-      date: new Date("2021-01-14"), // Date of the announcement
-      description:
-        'We are calling for articles, short stories, write-ups, and experiences for the 5th edition of "THE SAIL-2020", the annual magazine of the NAME department, MIST. Submission deadline: 20th February 2021. Please email your articles in MS Word/PDF format to rafi.mashrur@name.mist.ac.bd.',
-      image: "/images/announcements/SAIL.png",
-    },
-    {
-      title: "Alumni Reunion 2023",
-      date: Date.now(),
-      image: "/images/events/2/am_2.jpg",
-    },
-    {
-      title: "NAME Alumni Reunion",
-      date: Date.now(),
-      image:
-        "https://images.pexels.com/photos/976866/pexels-photo-976866.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-  ];
-
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await Axios("/event/latest");
-        console.log(response.data.events);
         setEvents(response.data.events);
       } catch (error) {
         console.error("Error fetching events:", error);
       }
     };
+    const fetchAnnouncements = async () => {
+      try {
+        const response = await Axios("announcements/paginated?page=1&limit=5");
+        setAnnouncements(response.data.data);
+      } catch (error) {
+        console.log(error);
+        message.error("Something wrong happended");
+      }
+    };
 
     fetchEvents();
+    fetchAnnouncements();
   }, []);
 
   const handleLearnMoreClick = (event) => {
@@ -168,7 +159,11 @@ function Home() {
                 >
                   <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
                     <img
-                      src={announcement.image}
+                      src={
+                        announcement.image
+                          ? `${baseUrl}/announcements/${announcement.image}`
+                          : defaultAnnouncement
+                      }
                       alt={announcement.title}
                       className="w-full md:w-32 h-32 object-cover rounded-md"
                     />
@@ -179,18 +174,22 @@ function Home() {
                       <p className="text-sm md:text-base text-gray-600 mt-2">
                         Date: {new Date(announcement.date).toLocaleDateString()}
                       </p>
-                      <button className="text-primary hover:underline mt-2 text-sm md:text-base font-medium">
-                        Learn More
-                      </button>
+                      <Link to={`/announcement/${announcement._id}`}>
+                        <button className="text-primary hover:underline mt-2 text-sm md:text-base font-medium">
+                          Learn More
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
             <div className="text-center mt-6">
-              <button className="bg-primary text-white px-6 py-2 rounded-md text-sm md:text-base font-medium hover:bg-primary-dark transition duration-300 hover:bg-black">
-                View All Announcements
-              </button>
+              <Link to="/announcements">
+                <button className="bg-primary text-white px-6 py-2 rounded-md text-sm md:text-base font-medium hover:bg-primary-dark transition duration-300 hover:bg-black">
+                  View All Announcements
+                </button>
+              </Link>
             </div>
           </div>
         </div>

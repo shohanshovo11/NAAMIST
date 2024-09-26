@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
-import { Table, Avatar } from "antd";
+import { Table, Avatar, Spin } from "antd"; // Imported Spin here
 import HeroSection from "./HeroSection";
-// import allMembers from "../../utils/data/members"; // Remove the static data
 import executiveMembers from "../../utils/data/committeeMembers";
 import Axios from "../../utils/axios";
 import defaultProfile from "../../assets/default_profile.png";
@@ -306,7 +305,9 @@ const Members = () => {
             setWorkSector={setWorkSector}
           />
           {loading ? (
-            <p>Loading...</p> // Display loading state
+            <div className="flex justify-center items-center h-64">
+              <Spin size="large" /> {/* Display Ant Design spinner */}
+            </div>
           ) : filter === "executive" ? (
             <ExecutivePanel />
           ) : (

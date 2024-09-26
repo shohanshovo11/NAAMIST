@@ -13,6 +13,8 @@ import EventExpanded from "./components/Events/EventExpanded";
 import AboutUs from "./components/AboutUs/AboutUs";
 import ContactUs from "./components/ContactUs/ContactUs";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
+import Announcements from "./components/Announcements/Announcements";
+import AnnouncementDetail from "./components/Announcements/AnnouncementDetail";
 
 function App() {
   return (
@@ -33,6 +35,23 @@ function App() {
           element={
             <Layout>
               <Members />
+            </Layout>
+          }
+        />
+        <Route
+          path="/announcements"
+          element={
+            <Layout>
+              <Announcements />
+            </Layout>
+          }
+        />
+
+        <Route
+          path="/announcement/:id"
+          element={
+            <Layout>
+              <AnnouncementDetail />
             </Layout>
           }
         />
