@@ -17,10 +17,6 @@ const announcementSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  link: {
-    type: String,
-    default: '',
-  },
   isApproved: {
     type: Boolean,
     default: false,

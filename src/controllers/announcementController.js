@@ -67,7 +67,7 @@ const processDate = (dateString) => {
 // Create a new announcement with image handling and date processing
 module.exports.createAnnouncement = async (req, res) => {
   const {
-    title, description, date, link
+    title, description, date, link, isApproved
   } = req.body;
 
   try {
@@ -76,7 +76,7 @@ module.exports.createAnnouncement = async (req, res) => {
     if (req.file) {
       imageFilename = path.basename(req.file.path); // Save only the filename
     }
-
+    console.log(imageFilename, 'kjk');
     // Process the date correctly
     const processedDate = processDate(date);
 
@@ -86,6 +86,7 @@ module.exports.createAnnouncement = async (req, res) => {
       date: processedDate, // Use the processed date
       image: imageFilename, // Save only the filename in the announcement
       link,
+      isApproved: isApproved || false
     });
 
     const savedAnnouncement = await newAnnouncement.save();
@@ -142,13 +143,47 @@ module.exports.deleteAnnouncement = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Announcement not found' });
     }
 
-    // Delete the image file if it exists
-    if (announcement.image && fs.existsSync(path.join(__dirname, '../uploads/announcements', announcement.image))) {
-      fs.unlinkSync(path.join(__dirname, '../uploads/announcements', announcement.image));
+    // Try to delete the image file if it exists
+    if (announcement.image !== '' && announcement.image) {
+      const imagePath = path.join(__dirname, '../uploads/announcements', announcement.image);
+
+      try {
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath); // Delete the image file
+          console.log('Image file deleted successfully.');
+        }
+      } catch (imageError) {
+        console.error('Error deleting image file:', imageError); // Log the image deletion error
+      }
     }
 
-    await announcement.remove();
-    res.json({ success: true, message: 'Announcement deleted successfully' });
+    // Use findByIdAndDelete to remove the document
+    await Announcement.findByIdAndDelete(req.params.id);
+
+    res.json({ success: true, message: 'Announcement deleted successfully, even if image deletion failed.' });
+  } catch (error) {
+    console.error('Error deleting announcement:', error);
+    res.status(500).json({ success: false, message: 'Server Error', error });
+  }
+};
+
+// Approve an announcement by ID
+module.exports.approveAnnouncement = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the announcement by ID and update its isApproved field to true
+    const announcement = await Announcement.findByIdAndUpdate(
+      id,
+      { isApproved: true },
+      { new: true } // Return the updated document
+    );
+
+    if (!announcement) {
+      return res.status(404).json({ success: false, message: 'Announcement not found' });
+    }
+
+    res.json({ success: true, data: announcement });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server Error', error });
   }
