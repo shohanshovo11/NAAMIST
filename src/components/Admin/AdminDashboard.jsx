@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import UserManagement from "./UserManagement";
 import EventManagement from "./EventManagement";
+import AnnouncementManagement from "./AnnouncementManagement";
 
 const { Sider, Content, Header } = Layout;
 
@@ -48,6 +49,12 @@ const AdminDashboard = () => {
       label: "Events",
       icon: <SettingOutlined />,
       content: <EventManagement />,
+    },
+    {
+      key: "announcements",
+      label: "Announcements",
+      icon: <SettingOutlined />,
+      content: <AnnouncementManagement />,
     },
     {
       key: "logout",

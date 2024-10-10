@@ -8,6 +8,7 @@ const pages = [
   { name: "Home", path: "/" },
   { name: "Members", path: "/members" },
   { name: "Events", path: "/events" },
+  { name: "Announcements", path: "/announcements" },
   { name: "About Us", path: "/about-us" },
   { name: "Contact Us", path: "/contact-us" },
 ];

@@ -15,6 +15,7 @@ import ContactUs from "./components/ContactUs/ContactUs";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import Announcements from "./components/Announcements/Announcements";
 import AnnouncementDetail from "./components/Announcements/AnnouncementDetail";
+import PostAnnouncement from "./components/Announcements/PostAnnouncement";
 
 function App() {
   return (
@@ -52,6 +53,14 @@ function App() {
           element={
             <Layout>
               <AnnouncementDetail />
+            </Layout>
+          }
+        />
+        <Route
+          path="/post-announcement"
+          element={
+            <Layout>
+              <PostAnnouncement />
             </Layout>
           }
         />

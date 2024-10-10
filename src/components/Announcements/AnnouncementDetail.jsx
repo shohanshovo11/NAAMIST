@@ -58,7 +58,7 @@ const AnnouncementDetail = () => {
               : "/default-image.png" // Fallback if no image is available
           }
           alt={announcement.title}
-          className="w-full h-64 object-cover mb-4 rounded-md"
+          className="w-full h-64 object-contain mb-4 rounded-md "
         />
       )}
     </div>

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Pagination, Spin, Typography } from "antd";
+import { Pagination, Spin, Typography, Button } from "antd";
 import Axios from "../../utils/axios";
 import defaultAnnouncement from "/images/announcement.png";
 
 const { Title } = Typography;
 
 const imgUrl = import.meta.env.VITE_IMAGE_URL;
+
 export default function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,10 +38,18 @@ export default function Announcements() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <Title level={2} className="text-center text-primary font-light mb-6">
-        Announcements
-      </Title>
+    <div className="container max-w-[1080px] mx-auto px-4 py-6">
+      {/* Header with Title and Post Announcement Button */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+        <Title level={2} className="text-primary font-light">
+          Announcements
+        </Title>
+        <Link to="/post-announcement">
+          <Button type="primary" className="bg-primary">
+            Post Announcement
+          </Button>
+        </Link>
+      </div>
 
       {loading ? (
         <div className="flex justify-center">
