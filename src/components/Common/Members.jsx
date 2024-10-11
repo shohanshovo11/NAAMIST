@@ -185,21 +185,22 @@ const Members = () => {
   const [workSector, setWorkSector] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
   // Fetch users from backend API
   useEffect(() => {
     const fetchUsers = async () => {
-      setLoading(true); // Start loading
+      setLoading(true);
       try {
-        const response = await Axios("/alumni/get"); // Replace with your actual backend URL
-        console.log(response);
-        const data = await response.data;
-        setUsers(data); // Set the fetched users
-        setLoading(false); // Stop loading
+        const response = await Axios("/alumni/get");
+        const data = response.data;
+        const sortedData = data.sort((a, b) => a.batch - b.batch);
+
+        setUsers(sortedData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching users:", error);
-        setLoading(false); // Stop loading on error
+        setLoading(false);
       }
     };
 
