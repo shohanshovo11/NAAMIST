@@ -13,9 +13,9 @@ const heroItems = [
   },
   {
     image: "/images/events/2/am_2.jpg",
-    motto: "Explore the Universe",
+    motto: "Cherish the Legacy",
     description:
-      "Dive into the mysteries of the cosmos with our cutting-edge space research community.",
+      "Celebrate the shared journey of excellence and be part of a legacy that continues to inspire future generations.",
   },
   {
     image: "/images/events/3/1.jpg",

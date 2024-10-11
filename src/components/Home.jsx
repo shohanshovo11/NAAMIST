@@ -165,7 +165,9 @@ function Home() {
                           : defaultAnnouncement
                       }
                       alt={announcement.title}
-                      className="w-full md:w-32 h-32 object-cover rounded-md"
+                      className={`w-full md:w-32 h-32 rounded-md ${
+                        announcement.image ? "object-cover" : "object-contain"
+                      }`}
                     />
                     <div className="flex-1">
                       <h4 className="text-lg md:text-xl font-semibold text-gray-800">

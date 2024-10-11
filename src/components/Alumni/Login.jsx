@@ -4,6 +4,7 @@ import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Axios from "../../utils/axios";
 import Logo from "../../assets/NAAMIST-150-x-150-px.png";
+import { notification } from "antd";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -38,7 +39,10 @@ const Login = () => {
       if (isRegister) {
         // Registration logic
         if (password !== confirmPassword) {
-          console.error("Passwords do not match.");
+          notification.error({
+            message: "Registration Error",
+            description: "Passwords do not match.",
+          });
           return;
         }
         // Create FormData and append all form fields including profilePic
@@ -58,13 +62,17 @@ const Login = () => {
         formData.append("workSectorType", workSector);
         formData.append("isAuthorized", false);
         if (profilePic) formData.append("profilePic", profilePic);
+
         const response = await Axios.post("/auth/register", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        console.log("Registration successful:", response.data);
+        notification.success({
+          message: "Registration Successful",
+          description: "You have been successfully registered!",
+        });
         setIsRegister(false);
       } else {
         // Login logic
@@ -73,7 +81,6 @@ const Login = () => {
           password,
           role: "alumni",
         });
-        console.log(response, "shohs");
         const { token, role, user } = response.data;
         const success = signIn({
           token,
@@ -89,13 +96,25 @@ const Login = () => {
         });
 
         if (success) {
-          console.log("Successfully signed in!");
+          notification.success({
+            message: "Login Successful",
+            description: "You have successfully signed in!",
+          });
           navigate("/");
         } else {
-          console.error("Failed to sign in.");
+          notification.error({
+            message: "Login Error",
+            description: "Failed to sign in. Please try again.",
+          });
         }
       }
     } catch (error) {
+      notification.error({
+        message: "Submission Failed",
+        description:
+          error.response?.data?.message ||
+          "Something went wrong. Please try again.",
+      });
       console.error("Submission failed:", error);
     }
   };
@@ -227,7 +246,7 @@ const Login = () => {
                   <option value="Defence">Defence</option>
                   <option value="Private">Private Sector</option>
                   <option value="Academician">Academician</option>
-                  <option value="Other">Other</option>
+                  <option value="Others">Other</option>
                 </select>
               </div>
 
@@ -281,6 +300,7 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                autoComplete="email"
               />
               <div className="relative">
                 <input
@@ -289,6 +309,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
                   className="p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  autoComplete="current-password"
                 />
                 <button
                   onClick={() => setShowPassword(!showPassword)}
