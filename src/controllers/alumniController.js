@@ -2,12 +2,29 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const Alumni = require('../models/alumni');
+const { generateId } = require('../utils/generateId');
 
 // Get all Alumni excluding the password field
 exports.getAllAlumni = async (req, res) => {
   try {
     const alumni = await Alumni.find().select('-password'); // Exclude password field
-    res.status(200).json(alumni);
+    console.log(alumni, "alumnimem");
+    // const totalAlumni = 0;
+    let gm = 0;
+    let lm = 0;
+    alumni.forEach((alum)=>{
+      if(alum.alumniType === 'GM') {
+        gm+=1;
+      } else if(alum.alumniType === 'LM') {
+        lm+=1;
+      }
+    });
+    res.status(200).json({
+      alumniData: alumni,
+      total: gm + lm,
+      gm,
+      lm
+    });
   } catch (error) {
     console.error('Error fetching alumni:', error);
     res.status(500).json({ message: 'Failed to retrieve alumni' });
@@ -63,10 +80,10 @@ exports.getAlumniByEmail = async (req, res) => {
 // Approve Alumni
 exports.approveAlumni = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, alumniType } = req.params;
     const updatedAlumni = await Alumni.findByIdAndUpdate(
       id,
-      { isAuthorized: true },
+      { isAuthorized: true, alumniType },
       { new: true }
     );
 
@@ -76,7 +93,7 @@ exports.approveAlumni = async (req, res) => {
 
     res.status(200).json({
       message: 'Alumni approved successfully',
-      data: updatedAlumni.name,
+      data: updatedAlumni,
     });
   } catch (error) {
     console.error('Error approving alumni:', error);
@@ -116,48 +133,42 @@ exports.deleteAlumni = async (req, res) => {
   }
 };
 
-// Update Alumni
 exports.updateAlumni = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = { ...req.body };
-    console.log(id, updateData, 'jkk');
+
     const existingAlumni = await Alumni.findById(id);
     if (!existingAlumni) {
       return res.status(404).json({ message: 'Alumni not found' });
     }
 
-    if (!updateData.password || updateData.password === 'undefined') {
-      updateData.password = existingAlumni.password;
-    } else {
+    if (updateData.password && updateData.password !== 'undefined') {
       const saltRounds = parseInt(process.env.SALT_ROUNDS);
-      const hashedPassword = await bcrypt.hash(updateData.password, saltRounds);
-      updateData.password = hashedPassword;
+      updateData.password = await bcrypt.hash(updateData.password, saltRounds);
+    } else {
+      updateData.password = existingAlumni.password;
     }
 
     if (req.file) {
       const profilePic = req.file;
-
       if (existingAlumni.profilePic) {
         const previousImagePath = path.join(__dirname, '../../images', existingAlumni.profilePic);
-
         if (fs.existsSync(previousImagePath)) {
           fs.unlinkSync(previousImagePath);
         }
       }
-
       updateData.profilePic = profilePic.filename;
     }
 
-    const updatedAlumni = await Alumni.findByIdAndUpdate(
-      id,
-      { $set: updateData },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedAlumni) {
-      return res.status(404).json({ message: 'Alumni not found' });
+    if (updateData.alumniType && updateData.alumniType !== existingAlumni.alumniType) {
+      existingAlumni.alumniType = updateData.alumniType;
+      await generateId(existingAlumni);
     }
+
+    Object.assign(existingAlumni, updateData);
+
+    const updatedAlumni = await existingAlumni.save();
 
     res.status(200).json({
       message: 'Alumni updated successfully',

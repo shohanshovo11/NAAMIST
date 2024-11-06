@@ -41,7 +41,7 @@ router.get('/:id', getAlumniById);
 router.get('/getByEmail/:email', getAlumniByEmail);
 
 // Approve Alumni
-router.post('/approve/:id', approveAlumni);
+router.post('/approve/:id/:alumniType', approveAlumni);
 
 // Delete Alumni by id or email
 router.delete('/delete/:id', deleteAlumni);

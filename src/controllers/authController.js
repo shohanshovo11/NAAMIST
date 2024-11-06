@@ -10,7 +10,7 @@ const generateToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET, { e
 const registerAlumni = async (req, res) => {
   const {
     name, email, password, enrollmentYear, completionYear,
-    studentID, batch, mobile, workplace,
+    studentID, batch, mobile, workplace, bloodGroup,
     designation, facebook, linkedin, isAuthorized, workSectorType
   } = req.body;
 
@@ -22,24 +22,6 @@ const registerAlumni = async (req, res) => {
 
     // Access the uploaded file
     const profilePic = req.file ? req.file.filename : null;
-    console.log(
-      name,
-      email,
-      password,
-      enrollmentYear,
-      completionYear,
-      studentID,
-      batch,
-      mobile,
-      workplace,
-      designation,
-      facebook,
-      linkedin,
-      isAuthorized,
-      workSectorType,
-      'kkk'
-    );
-    // Create the new alumni
     const newAlumni = new Alumni({
       name,
       email,
@@ -53,13 +35,13 @@ const registerAlumni = async (req, res) => {
       designation,
       facebook,
       linkedin,
+      bloodGroup,
       isAuthorized,
       profilePic,
       workSectorType
     });
     await newAlumni.save();
 
-    // Remove password from the saved alumni object
     const savedAlumni = newAlumni.toObject();
     delete savedAlumni.password;
 

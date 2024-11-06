@@ -1,100 +1,86 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-// Convert saltRounds from string to number
 const saltRounds = parseInt(process.env.SALT_ROUNDS);
 
 // Define the Alumni schema
 const alumniSchema = new mongoose.Schema({
-  name: {
+  id: { type: String },
+  alumniType: {
     type: String,
-    required: true,
+    enum: [ 'GM', 'LM' ],
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  enrollmentYear: {
-    type: Number,
-    required: true,
-  },
-  completionYear: {
-    type: Number,
-    required: true,
-  },
-  studentID: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
-  batch: {
-    type: Number,
-    required: true,
-  },
-  mobile: {
-    type: String,
-    required: true,
-    match: /^(?:\+8801|01)\d{9}$/, // Bangladesh mobile number validation (supports both +8801 and 01)
-  },
-  workplace: {
-    type: String,
-  },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  enrollmentYear: { type: Number, required: true },
+  completionYear: { type: Number, required: true },
+  studentID: { type: Number, required: true, unique: true },
+  batch: { type: Number, required: true },
+  mobile: { type: String, required: true, match: /^(?:\+8801|01)\d{9}$/ },
+  workplace: { type: String },
   workSectorType: {
     type: String,
-    enum: [ 'Government',
-      'Private',
-      'Higher Study',
-      'Defence',
-      'Academician',
-      'Others', ]
+    enum: [ 'Government', 'Private', 'Higher Study', 'Defence', 'Academician', 'Others' ],
   },
-  designation: {
+  designation: { type: String },
+  facebook: { type: String },
+  linkedin: { type: String },
+  bloodGroup: {
     type: String,
+    enum: [ 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-' ],
   },
-  facebook: {
-    type: String,
-  },
-  linkedin: {
-    type: String,
-  },
-  isAuthorized: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  role: {
-    type: String,
-    required: true,
-    default: 'alumni',
-  },
-  profilePic: {
-    type: String, // URL of the profile picture
-    default: '', // Optional, can set a default URL if needed
-  },
+  isAuthorized: { type: Boolean, required: true, default: false },
+  role: { type: String, required: true, default: 'alumni' },
+  profilePic: { type: String, default: '' },
 });
 
 // Pre-save hook to hash the password before saving
 alumniSchema.pre('save', function (next) {
-  const alumni = this;
-  // Check if the password is modified
-  if (!alumni.isModified('password')) {
-    return next();
-  }
-  // Hash the password
-  bcrypt.hash(alumni.password, saltRounds, (err, hashedPassword) => {
-    if (err) {
-      return next(err);
-    }
-
-    // Replace the plain password with the hashed password
-    alumni.password = hashedPassword;
+  if (!this.isModified('password')) return next();
+  bcrypt.hash(this.password, saltRounds, (err, hashedPassword) => {
+    if (err) return next(err);
+    this.password = hashedPassword;
     next();
   });
+});
+
+// ID generation logic
+async function generateId(doc) {
+  const lastAlumni = await doc.constructor
+    .findOne({ alumniType: doc.alumniType })
+    .sort({ id: -1 })
+    .exec();
+
+  let newSequence = 1;
+  if (lastAlumni && lastAlumni.id) {
+    const lastSequence = parseInt(lastAlumni.id.slice(2), 10);
+    newSequence = lastSequence + 1;
+  }
+
+  doc.id = `${doc.alumniType}${String(newSequence).padStart(3, '0')}`;
+}
+
+// Pre-save hook to generate ID for new documents or when alumniType changes
+alumniSchema.pre('save', async function (next) {
+  if ((this.isNew || this.isModified('alumniType')) && (this.alumniType === 'GM' || this.alumniType === 'LM')) {
+    await generateId(this);
+  }
+  next();
+});
+
+// Pre-findOneAndUpdate hook for updates
+alumniSchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate();
+  if (update.alumniType === 'GM' || update.alumniType === 'LM') {
+    const doc = await this.model.findOne(this.getQuery());
+    if (doc && doc.alumniType !== update.alumniType) {
+      doc.alumniType = update.alumniType;
+      await generateId(doc);
+      this.set({ id: doc.id });
+    }
+  }
+  next();
 });
 
 // Define the Alumni model
