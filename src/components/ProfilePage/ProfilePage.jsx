@@ -69,6 +69,7 @@ const ProfilePage = () => {
     formData.append("completionYear", profile.completionYear);
     formData.append("studentID", profile.studentID);
     formData.append("batch", profile.batch);
+    formData.append("bloodGroup", profile.bloodGroup);
     formData.append("mobile", profile.mobile);
     formData.append("workplace", profile.workplace);
     formData.append("designation", profile.designation);
@@ -96,7 +97,7 @@ const ProfilePage = () => {
 
       if (response.status === 200) {
         // Update local state with the updated profile data
-        setProfile(response.data);
+        setProfile(response?.data?.data);
 
         // Display a success message
         message.success("Profile updated successfully!");
@@ -157,6 +158,9 @@ const ProfilePage = () => {
               />
               <h1 className="text-3xl font-semibold text-primary">
                 {profile.name}
+              </h1>
+              <h1 className="text-lg font-semibold text-gray-400">
+                Your Alumni ID: {profile?.id}
               </h1>
             </div>
 
@@ -268,6 +272,34 @@ const ProfilePage = () => {
                   onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="batch"
+                  className="block text-gray-700 font-medium"
+                >
+                  Blood Group
+                </label>
+                <select
+                  value={profile?.bloodGroup}
+                  onChange={(e) =>
+                    setProfile({ ...profile, bloodGroup: e.target.value })
+                  }
+                  className="p-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="" disabled>
+                    Select Blood Group*
+                  </option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
               </div>
 
               {/* Mobile */}
