@@ -96,6 +96,11 @@ const UserCard = ({ user }) => {
         className="rounded-full h-40 w-40 object-cover mx-auto"
       />
       <h2 className="mt-4 text-xl font-semibold text-center">{user?.name}</h2>
+      {user?.bloodGroup && (
+        <p className="text-center text-gray-500">
+          Blood Group: {user?.bloodGroup}
+        </p>
+      )}
       <p className="text-center text-gray-500">NAME: {user?.batch}</p>
       <p className="text-center text-gray-500">
         Sector: {user?.designation}, {user?.workplace}
@@ -219,8 +224,8 @@ const Members = () => {
         (user) =>
           (workSector === "All" || user.workSectorType === workSector) &&
           (user?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            user?.batch?.includes(searchQuery) ||
-            user?.workSector?.toLowerCase().includes(searchQuery.toLowerCase()))
+          String(user?.batch || '').includes(searchQuery)||
+          user?.workSector?.toLowerCase().includes(searchQuery.toLowerCase()))
       );
 
       // Pagination logic
