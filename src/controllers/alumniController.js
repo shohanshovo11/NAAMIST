@@ -35,7 +35,7 @@ exports.getAllAlumni = async (req, res) => {
 exports.getAlumni = async (req, res) => {
   try {
     const alumni = await Alumni.find({ isAuthorized: true }).select(
-      'name email batch workplace workSectorType designation facebook linkedin profilePic'
+      'name email batch workplace workSectorType designation facebook linkedin profilePic bloodGroup'
     );
     res.status(200).json(alumni);
   } catch (error) {
