@@ -198,7 +198,7 @@ const Login = () => {
                 type="text"
                 value={batch}
                 onChange={(e) => setBatch(e.target.value)}
-                placeholder="Batch*"
+                placeholder="Batch(E.g: 1, 2, 3...)*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
@@ -291,7 +291,7 @@ const Login = () => {
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="" disabled>
-                  Select Blood Group
+                  Select Blood Group*
                 </option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
