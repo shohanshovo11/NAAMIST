@@ -5,6 +5,7 @@ import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import Axios from "../../utils/axios";
 import Logo from "../../assets/NAAMIST-150-x-150-px.png";
 import { notification } from "antd";
+import { FaCamera } from "react-icons/fa";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -23,17 +24,17 @@ const Login = () => {
   const [designation, setDesignation] = useState("");
   const [facebookLink, setFacebookLink] = useState("");
   const [linkedinLink, setLinkedinLink] = useState("");
-  const [workSector, setWorkSector] = useState(""); // Work Sector state
-  const [profilePic, setProfilePic] = useState(null); // State for Profile Pic
+  const [workSector, setWorkSector] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
+  const [bloodGroup, setBloodGroup] = useState("");
+
   const signIn = useSignIn();
   const navigate = useNavigate();
 
-  // Handle profile picture file selection
   const handleFileChange = (e) => {
-    setProfilePic(e.target.files[0]); // Store the selected file
+    setProfilePic(e.target.files[0]);
   };
 
-  // Form submission handler
   const submitHandler = async () => {
     try {
       if (isRegister) {
@@ -42,6 +43,22 @@ const Login = () => {
           notification.error({
             message: "Registration Error",
             description: "Passwords do not match.",
+          });
+          return;
+        }
+        if (
+          batch === "" ||
+          email === "" ||
+          name === "" ||
+          studentId === "" ||
+          enrollmentYear === "" ||
+          completionYear === "" ||
+          mobileNumber === "" ||
+          workSector === ""
+        ) {
+          notification.error({
+            message: "Submission Failed",
+            description: "Please fill in all mandatory fields marked with *.",
           });
           return;
         }
@@ -59,6 +76,7 @@ const Login = () => {
         formData.append("designation", designation);
         formData.append("facebook", facebookLink);
         formData.append("linkedin", linkedinLink);
+        formData.append("bloodGroup", bloodGroup);
         formData.append("workSectorType", workSector);
         formData.append("isAuthorized", false);
         if (profilePic) formData.append("profilePic", profilePic);
@@ -159,56 +177,49 @@ const Login = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Full Name"
+                placeholder="Full Name*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                placeholder="Email*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="text"
                 value={studentId}
                 onChange={(e) => setStudentId(e.target.value)}
-                placeholder="Student ID"
+                placeholder="Student ID*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="text"
                 value={batch}
                 onChange={(e) => setBatch(e.target.value)}
-                placeholder="Batch"
+                placeholder="Batch*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="number"
                 value={enrollmentYear}
                 onChange={(e) => setEnrollmentYear(e.target.value)}
-                placeholder="Enrollment Year"
+                placeholder="Enrollment Year*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="number"
                 value={completionYear}
                 onChange={(e) => setCompletionYear(e.target.value)}
-                placeholder="Completion Year"
+                placeholder="Completion Year*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
                 type="tel"
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
-                placeholder="Mobile Number"
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <input
-                type="text"
-                value={currentWorkplace}
-                onChange={(e) => setCurrentWorkplace(e.target.value)}
-                placeholder="Current Workplace"
+                placeholder="Mobile Number*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
@@ -219,12 +230,28 @@ const Login = () => {
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
-                type="url"
-                value={facebookLink}
-                onChange={(e) => setFacebookLink(e.target.value)}
-                placeholder="Facebook Link"
+                type="text"
+                value={currentWorkplace}
+                onChange={(e) => setCurrentWorkplace(e.target.value)}
+                placeholder="Current Workplace"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+              <select
+                value={workSector}
+                onChange={(e) => setWorkSector(e.target.value)}
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>
+                  Select Work Sector*
+                </option>
+                <option value="Higher Study">Higher Study</option>
+                <option value="Government">Government</option>
+                <option value="Defence">Defence</option>
+                <option value="Private">Private Sector</option>
+                <option value="Academician">Academician</option>
+                <option value="Others">Other</option>
+              </select>
+
               <div className="grid grid-cols-2 gap-4 col-span-1 md:col-span-2">
                 <input
                   type="url"
@@ -233,30 +260,48 @@ const Login = () => {
                   placeholder="LinkedIn Link"
                   className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <select
-                  value={workSector}
-                  onChange={(e) => setWorkSector(e.target.value)}
+                <input
+                  type="url"
+                  value={facebookLink}
+                  onChange={(e) => setFacebookLink(e.target.value)}
+                  placeholder="Facebook Link"
                   className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="" disabled>
-                    Select Work Sector
-                  </option>
-                  <option value="Higher Study">Higher Study</option>
-                  <option value="Government">Government</option>
-                  <option value="Defence">Defence</option>
-                  <option value="Private">Private Sector</option>
-                  <option value="Academician">Academician</option>
-                  <option value="Others">Other</option>
-                </select>
+                />
               </div>
 
               {/* Profile Picture Upload */}
+              <label
+                htmlFor="profilePic"
+                className="flex items-center gap-2 p-3 border border-gray-300 rounded-lg cursor-pointer text-gray-600 hover:text-gray-800 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                <FaCamera className="text-base" />
+                {profilePic ? profilePic.name : "Choose Profile Image"}
+              </label>
               <input
+                id="profilePic"
                 type="file"
                 accept="image/*"
                 onChange={handleFileChange}
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="hidden"
               />
+
+              <select
+                value={bloodGroup}
+                onChange={(e) => setBloodGroup(e.target.value)}
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>
+                  Select Blood Group
+                </option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
 
               <div className="relative col-span-1 md:col-span-2">
                 <input

@@ -9,26 +9,30 @@ import {
   message,
   Popconfirm,
   Tag,
+  Select,
 } from "antd";
 import {
   PlusOutlined,
   UploadOutlined,
-  CheckOutlined,
   DeleteOutlined,
   EditOutlined,
 } from "@ant-design/icons";
 import Axios from "../../utils/axios";
+import { Option } from "antd/es/mentions";
 
 const imageUrl = import.meta.env.VITE_IMAGE_URL;
-// Add/Edit Alumni Form
+
 const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
 
-  // Handle file upload
   const handleUploadChange = ({ fileList }) => {
     setFileList(fileList);
   };
+
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [initialValues, form]);
 
   return (
     <Modal
@@ -54,7 +58,7 @@ const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
             }
 
             form.resetFields();
-            onCreate(formData); // Pass FormData to the parent component
+            onCreate(formData);
             setFileList([]);
           })
           .catch((info) => {
@@ -142,7 +146,17 @@ const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
           <Input placeholder="Enter designation (optional)" />
         </Form.Item>
 
-        {/* New password field */}
+        <Form.Item
+          name="alumniType"
+          label="Alumni Type"
+          rules={[{ required: true, message: "Please select the alumni type" }]}
+        >
+          <Select placeholder="Select alumni type">
+            <Option value="GM">GM</Option>
+            <Option value="LM">LM</Option>
+          </Select>
+        </Form.Item>
+
         <Form.Item
           name="password"
           label="Password"
@@ -170,34 +184,56 @@ const AlumniForm = ({ visible, onCreate, onCancel, initialValues, isEdit }) => {
   );
 };
 
-// Main Alumni Management Component
 const AlumniManagement = () => {
   const [alumniData, setAlumniData] = useState();
   const [visible, setVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
   const [selectedAlumni, setSelectedAlumni] = useState(null);
-  const [filteredAlumni, setFilteredAlumni] = useState(alumniData); // State for filtered data
-  const [filterStatus, setFilterStatus] = useState("all"); // State for tracking selected filter
-  const [searchText, setSearchText] = useState(""); // Search text state
+  const [filteredAlumni, setFilteredAlumni] = useState(alumniData);
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [searchText, setSearchText] = useState("");
+  const [alumniCount, setAlumniCount] = useState({ total: 0, gm: 0, lm: 0 });
 
   const fetchAlumniData = async () => {
     try {
-      const response = await Axios.get("/alumni"); // Adjust the endpoint to match your backend
+      const response = await Axios.get("/alumni");
       console.log(response, "jjl");
-      setAlumniData(response.data); // Set the fetched data
-      setFilteredAlumni(response.data); // Initialize filtered data with fetched data
+      setAlumniData(response.data.alumniData);
+      setFilteredAlumni(response.data.alumniData);
+      setAlumniCount({
+        total: response.data.total,
+        gm: response.data.gm,
+        lm: response.data.lm,
+      });
     } catch (error) {
       console.error("Error fetching alumni data:", error);
       message.error("Failed to load alumni data");
     }
   };
 
-  // Fetch alumni data when the component mounts
   useEffect(() => {
     fetchAlumniData();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
   useEffect(() => {
+    if (alumniData !== null && alumniData !== undefined) {
+      let total = 0,
+        gm = 0,
+        lm = 0;
+      alumniData.forEach((alumni) => {
+        if (alumni.alumniType === "GM") {
+          gm += 1;
+        } else if (alumni.alumniType === "LM") {
+          lm += 1;
+        }
+      });
+      total = gm + lm;
+      setAlumniCount({
+        total,
+        gm,
+        lm,
+      });
+    }
     if (filterStatus === "approved") {
       setFilteredAlumni(
         alumniData.filter((alumni) => alumni.isAuthorized === true)
@@ -211,7 +247,6 @@ const AlumniManagement = () => {
     }
   }, [alumniData, filterStatus]);
 
-  // Extract unique values for filters
   const getUniqueValues = (key) => {
     return [...new Set(alumniData?.map((item) => item[key]))]?.map((value) => ({
       text: String(value),
@@ -219,7 +254,6 @@ const AlumniManagement = () => {
     }));
   };
 
-  // Filters alumni by approval status
   const filterAlumniByApproval = (status) => {
     setFilterStatus(status);
     if (status === "approved") {
@@ -235,13 +269,11 @@ const AlumniManagement = () => {
     }
   };
 
-  // Reset filter to show all alumni
   const resetFilter = () => {
     setFilterStatus("all");
     setFilteredAlumni(alumniData);
   };
 
-  // Handle search
   const handleSearch = (text) => {
     setSearchText(text);
     const filtered = alumniData.filter((alumni) =>
@@ -252,7 +284,6 @@ const AlumniManagement = () => {
     setFilteredAlumni(filtered);
   };
 
-  // Table columns configuration with filters
   const columns = [
     {
       title: "Profile Picture",
@@ -268,6 +299,12 @@ const AlumniManagement = () => {
         ) : (
           "No Picture"
         ),
+    },
+    {
+      title: "Id",
+      id: "Id",
+      dataIndex: "id",
+      key: "id",
     },
     {
       title: "Name",
@@ -312,21 +349,26 @@ const AlumniManagement = () => {
       title: "Authorized",
       dataIndex: "isAuthorized",
       key: "isAuthorized",
-      render: (isAuthorized, record) =>
-        isAuthorized ? (
-          <Tag color="green">Approved</Tag>
-        ) : (
-          <Popconfirm
-            title="Are you sure to approve this alumni?"
-            onConfirm={() => handleApprove(record._id)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="primary" icon={<CheckOutlined />}>
-              Approve
-            </Button>
-          </Popconfirm>
-        ),
+      render: (isAuthorized, record) => {
+        if (isAuthorized) {
+          return <Tag color="green">{record.alumniType}</Tag>;
+        } else {
+          return record.status ? (
+            <Tag color={record.status === "GM" ? "blue" : "purple"}>
+              {record.status}
+            </Tag>
+          ) : (
+            <Select
+              placeholder="Select type"
+              style={{ width: 120 }}
+              onChange={(value) => handleStatusChange(record._id, value)}
+            >
+              <Option value="GM">GM</Option>
+              <Option value="LM">LM</Option>
+            </Select>
+          );
+        }
+      },
     },
     {
       title: "Actions",
@@ -377,14 +419,34 @@ const AlumniManagement = () => {
         setAlumniData(updatedAlumniData);
         setFilteredAlumni(updatedAlumniData);
 
-        // Show success message that disappears after 2 seconds
         message.success("Alumni added successfully!", 2);
         setVisible(false);
       }
     } catch (error) {
-      // Show error message that disappears after 2 seconds
       message.error("Error adding alumni", 2);
     }
+  };
+
+  const handleStatusChange = async (_id, alumniType) => {
+    try {
+      const res = await Axios.post(`/alumni//approve/${_id}/${alumniType}`);
+      console.log(res, "resdata");
+      if (res.status === 200) {
+        const updatedAlumniData = alumniData.map((alumni) =>
+          alumni._id === _id
+            ? { ...alumni, isAuthorized: true, alumniType, id: res.data.id }
+            : alumni
+        );
+        setAlumniData(updatedAlumniData);
+        setFilteredAlumni(updatedAlumniData);
+        filterAlumniByApproval(filterStatus);
+        message.success("Alumni approved successfully!", 2);
+      }
+    } catch (e) {
+      message.error("Sorry! Could not approve", 2);
+      return;
+    }
+    console.log(_id, alumniType, "shohanshovo");
   };
 
   const handleApprove = async (id) => {
@@ -424,21 +486,17 @@ const AlumniManagement = () => {
     setFilteredAlumni(updatedAlumniData);
   };
 
-  // Handle editing alumni
   const handleEdit = (record) => {
     setSelectedAlumni(record);
     setEditVisible(true);
   };
 
-  // Update alumni information
   const handleUpdate = async (formData) => {
     try {
-      // Log all key-value pairs in FormData
       for (let [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
       }
-  
-      // Send the updated data to the backend
+
       const res = await Axios.put(
         `/alumni/update/${selectedAlumni._id}`,
         formData,
@@ -448,31 +506,31 @@ const AlumniManagement = () => {
           },
         }
       );
-  
+
       if (res.status === 200) {
-        const updatedAlumni = res.data;
-        console.log(updatedAlumni, "Updated Alumni");
-  
-        // Ensure you're creating a new array reference to trigger React re-render
+        const updatedAlumni = res.data.data; 
+        delete updatedAlumni.password;
         const updatedData = alumniData.map((alumni) =>
           alumni._id === updatedAlumni._id ? updatedAlumni : alumni
         );
-  
-        // Use spread operator to create a new array
+
         setAlumniData([...updatedData]);
-        setFilteredAlumni([...updatedData]);
-  
+
+        const updatedFilteredData = filteredAlumni.map((alumni) =>
+          alumni._id === updatedAlumni._id ? updatedAlumni : alumni
+        );
+        setFilteredAlumni([...updatedFilteredData]);
+
         message.success("Alumni updated successfully!");
-        setEditVisible(false); // Close the edit modal
+        setEditVisible(false); 
       } else {
         message.error("Error updating alumni.");
       }
     } catch (error) {
       message.error("Failed to update alumni.");
-      console.error(error); // Log the error for debugging
+      console.error(error);
     }
   };
-  
 
   return (
     <div>
@@ -532,6 +590,16 @@ const AlumniManagement = () => {
       >
         Add Alumni
       </Button>
+
+      <Tag color="success" className="p-1 ml-2">
+        Total Alumni: {alumniCount.total}
+      </Tag>
+      <Tag color="success" className="p-1">
+        General Members: {alumniCount.gm}
+      </Tag>
+      <Tag color="success" className="p-1">
+        Permanent Members: {alumniCount.lm}
+      </Tag>
 
       {/* Alumni Management Table */}
       <Table columns={columns} dataSource={filteredAlumni} rowKey="_id" />

@@ -96,7 +96,7 @@ const UserCard = ({ user }) => {
         className="rounded-full h-40 w-40 object-cover mx-auto"
       />
       <h2 className="mt-4 text-xl font-semibold text-center">{user?.name}</h2>
-      <p className="text-center text-gray-500">Batch: {user?.batch}</p>
+      <p className="text-center text-gray-500">NAME: {user?.batch}</p>
       <p className="text-center text-gray-500">
         Sector: {user?.designation}, {user?.workplace}
       </p>
