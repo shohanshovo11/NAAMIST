@@ -1,18 +1,18 @@
 import { useState } from "react";
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Modal } from "antd";
 import {
   UserOutlined,
-  DashboardOutlined,
   SettingOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import UserManagement from "./UserManagement";
 import EventManagement from "./EventManagement";
 import AnnouncementManagement from "./AnnouncementManagement";
+import { useNavigate } from "react-router-dom";
+import useSignOut from "react-auth-kit/hooks/useSignOut";
 
 const { Sider, Content, Header } = Layout;
 
-// Content Components
 const DashboardContent = () => (
   <div className="text-lg font-semibold">
     Dashboard Content - Scrollable. You can add a lot of content here to see the
@@ -22,22 +22,42 @@ const DashboardContent = () => (
     </div>
   </div>
 );
-const LogoutContent = () => (
-  <div className="text-lg font-semibold">Logging out...</div>
-);
+const LogoutContent = ({ setSelectedKey }) => {
+  const [isModalVisible, setIsModalVisible] = useState(true);
+  const navigate = useNavigate();
+  const signOut = useSignOut();
 
-// Refactored AdminDashboard
+  const handleLogout = () => {
+    signOut();
+    navigate("/admin/login");
+  };
+
+  const handleCancel = () => {
+    console.log("cancel");
+    setIsModalVisible(false);
+    setSelectedKey("users");
+  };
+
+  return (
+    <Modal
+      title="Confirm Logout"
+      visible={isModalVisible}
+      onOk={handleLogout}
+      onCancel={handleCancel}
+      okText="Yes, Logout"
+      cancelText="Cancel"
+    >
+      <div className="text-lg font-semibold">
+        Are you sure you want to log out?
+      </div>
+    </Modal>
+  );
+};
+
 const AdminDashboard = () => {
-  const [selectedKey, setSelectedKey] = useState("dashboard");
+  const [selectedKey, setSelectedKey] = useState("users");
 
-  // Menu items configuration test
   const menuItems = [
-    {
-      key: "dashboard",
-      label: "Dashboard",
-      icon: <DashboardOutlined />,
-      content: <DashboardContent />,
-    },
     {
       key: "users",
       label: "Users",
@@ -60,7 +80,7 @@ const AdminDashboard = () => {
       key: "logout",
       label: "Logout",
       icon: <LogoutOutlined />,
-      content: <LogoutContent />,
+      content: <LogoutContent setSelectedKey={setSelectedKey} />,
     },
   ];
 
@@ -80,8 +100,9 @@ const AdminDashboard = () => {
         <div className="h-12 m-4 bg-gray-700 rounded-lg" />
         <Menu
           theme="dark"
-          defaultSelectedKeys={["dashboard"]}
+          defaultSelectedKeys={["users"]}
           mode="inline"
+          selectedKeys={[selectedKey]}
           onClick={(e) => setSelectedKey(e.key)}
           className="bg-gray-900"
         >

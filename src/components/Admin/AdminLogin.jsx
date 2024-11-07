@@ -1,13 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import Axios from "../../utils/axios";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import { jwtDecode } from "jwt-decode";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const signIn = useSignIn();
   const navigate = useNavigate();
+  const authUser = useAuthUser();
+
+  useEffect(() => {
+    const token = authUser?.token;
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp > currentTime) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/admin/login");
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        navigate("/admin/login");
+      }
+    }
+  }, [authUser, navigate]);
 
   const loginHandler = async () => {
     try {
@@ -33,11 +55,10 @@ const AdminLogin = () => {
       });
 
       if (success) {
-        console.log("Successfully signed in!");
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else {
-          navigate("/login");
+          navigate("/admin/login");
         }
       } else {
         console.error("Failed to sign in.");
