@@ -13,15 +13,6 @@ import useSignOut from "react-auth-kit/hooks/useSignOut";
 
 const { Sider, Content, Header } = Layout;
 
-const DashboardContent = () => (
-  <div className="text-lg font-semibold">
-    Dashboard Content - Scrollable. You can add a lot of content here to see the
-    effect.
-    <div style={{ height: "1500px" }}>
-      <p>Extra content for testing scrolling behavior.</p>
-    </div>
-  </div>
-);
 const LogoutContent = ({ setSelectedKey }) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
   const navigate = useNavigate();
@@ -86,7 +77,7 @@ const AdminDashboard = () => {
 
   const renderContent = () => {
     const currentMenuItem = menuItems.find((item) => item.key === selectedKey);
-    return currentMenuItem ? currentMenuItem.content : <DashboardContent />;
+    return currentMenuItem ? currentMenuItem.content : <UserManagement />;
   };
 
   return (

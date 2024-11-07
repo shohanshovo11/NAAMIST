@@ -165,10 +165,10 @@ const Login = () => {
       </div>
 
       {/* Right Column with scrollable registration content */}
-      <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-center p-10 overflow-y-auto max-h-screen">
+      <div className="w-full md:w-1/2 bg-white flex flex-col justify-center items-center py-4 px-4 md:p-10 md:overflow-y-auto">
         {isRegister ? (
           <>
-            <h2 className="text-3xl font-semibold mb-6 mt-16">
+            <h2 className="text-3xl font-semibold mb-4 md:mb-6 md:mt-16">
               Register as Alumni
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-xl">
