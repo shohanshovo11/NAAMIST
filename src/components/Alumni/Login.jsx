@@ -219,7 +219,7 @@ const Login = () => {
                 type="tel"
                 value={mobileNumber}
                 onChange={(e) => setMobileNumber(e.target.value)}
-                placeholder="Mobile Number*"
+                placeholder="Mobile Number(e.g: +XXX XXXXXXX)*"
                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <input
