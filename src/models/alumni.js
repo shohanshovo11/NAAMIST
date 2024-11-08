@@ -17,7 +17,7 @@ const alumniSchema = new mongoose.Schema({
   completionYear: { type: Number, required: true },
   studentID: { type: Number, required: true, unique: true },
   batch: { type: Number, required: true },
-  mobile: { type: String, required: true, match: /^(?:\+8801|01)\d{9}$/ },
+  mobile: { type: String, required: true },
   workplace: { type: String },
   workSectorType: {
     type: String,
