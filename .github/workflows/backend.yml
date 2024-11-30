@@ -13,6 +13,10 @@ env:
   DB_URI_CLOUD: ${{ secrets.DB_URI_CLOUD }}
   API_KEY: ${{ secrets.API_KEY }}
   SENDER_ID: ${{ secrets.SENDER_ID }}
+  SMTP_HOST: ${{ secrets.SMTP_HOST }}
+  SMTP_PORT: ${{ secrets.SMTP_PORT }}
+  SMTP_USER: ${{ secrets.SMTP_USER }}
+  SMTP_PASS: ${{ secrets.SMTP_PASS }}
 
 jobs:
   build:
