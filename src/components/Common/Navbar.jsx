@@ -41,11 +41,9 @@ function Navbar() {
     <nav className="text-black p-4 max-w-screen-xl mx-auto">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-2xl font-semibold">
-          <Link
-            to="/"
-            className="hover:text-secondary transition-colors duration-300 text-primary font-extralight tracking-[.25em]"
-          >
-            NAAMIST
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/images/NAAMIST.png" alt="NAAMIST Logo" className="h-12" />
+            <span className="text-primary font-semibold tracking-wider text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent hover:scale-105 transform transition-transform duration-300">NAAMIST</span>
           </Link>
         </div>
 
