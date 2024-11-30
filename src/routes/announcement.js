@@ -10,6 +10,7 @@ const {
   approveAnnouncement,
 } = require('../controllers/announcementController');
 const upload = require('../middleware/uploadAnnouncement'); // Import the multer configuration
+const { isAdminOrAlumni, isAdmin } = require('../middleware/validateRole');
 
 const router = express.Router();
 
@@ -17,9 +18,9 @@ const router = express.Router();
 router.get('/', getAllAnnouncements); // Get all announcements
 router.get('/paginated', getPaginatedAnnouncement); // Get all announcements
 router.get('/:id', getAnnouncementById); // Get announcement by ID
-router.post('/', upload.single('announcementImg'), createAnnouncement); // Create a new announcement with image upload
-router.put('/:id', upload.single('announcementImg'), updateAnnouncement); // Update an announcement with image upload
-router.delete('/:id', deleteAnnouncement); // Delete an announcement by ID
-router.put('/:id/approve', approveAnnouncement); // Approve an announcement
+router.post('/',isAdminOrAlumni, upload.single('announcementImg'), createAnnouncement); // Create a new announcement with image upload
+router.put('/:id',isAdminOrAlumni, upload.single('announcementImg'), updateAnnouncement); // Update an announcement with image upload
+router.delete('/:id',isAdmin, deleteAnnouncement); // Delete an announcement by ID
+router.put('/:id/approve',isAdmin, approveAnnouncement); // Approve an announcement
 
 module.exports = router;
