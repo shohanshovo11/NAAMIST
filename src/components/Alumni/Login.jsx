@@ -6,6 +6,9 @@ import Axios from "../../utils/axios";
 import Logo from "../../assets/NAAMIST-150-x-150-px.png";
 import { notification } from "antd";
 import { FaCamera } from "react-icons/fa";
+import { Modal } from "antd";
+import { Input } from "antd";
+import { Button } from "antd";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -27,6 +30,11 @@ const Login = () => {
   const [workSector, setWorkSector] = useState("");
   const [profilePic, setProfilePic] = useState(null);
   const [bloodGroup, setBloodGroup] = useState("");
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetOtp, setResetOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [resetStep, setResetStep] = useState(1); // 1: email, 2: OTP, 3: new password
 
   const signIn = useSignIn();
   const navigate = useNavigate();
@@ -134,6 +142,55 @@ const Login = () => {
           "Something went wrong. Please try again.",
       });
       console.error("Submission failed:", error);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    try {
+      if (resetStep === 1) {
+        // Request OTP
+        const response = await Axios.post("/auth/forgot-password", { email: resetEmail });
+        if (response.status === 200) {
+          notification.success({
+            message: "OTP Sent",
+            description: "Please check your email for the OTP",
+          });
+          setResetStep(2);
+        }
+      } else if (resetStep === 2) {
+        // Verify OTP
+        const response = await Axios.post("/auth/verify-reset-otp", {
+          email: resetEmail,
+          otp: resetOtp,
+        });
+        if (response.status === 200) {
+          notification.success({
+            message: "OTP Verified",
+            description: "Please enter your new password",
+          });
+          setResetStep(3);
+        }
+      } else if (resetStep === 3) {
+        // Reset password
+        const response = await Axios.post("/auth/reset-password", {
+          email: resetEmail,
+          otp: resetOtp,
+          newPassword,
+        });
+        if (response.status === 200) {
+          notification.success({
+            message: "Password Reset",
+            description: "Your password has been successfully reset",
+          });
+          setIsForgotPassword(false);
+          setResetStep(1);
+        }
+      }
+    } catch (error) {
+      notification.error({
+        message: "Error",
+        description: error.response?.data?.message || "Something went wrong",
+      });
     }
   };
 
@@ -372,6 +429,59 @@ const Login = () => {
         >
           {isRegister ? "Register" : "Sign In"}
         </button>
+        <div className="text-right mt-2">
+          <button
+            type="button"
+            onClick={() => setIsForgotPassword(true)}
+            className="text-primary hover:text-black"
+          >
+            Forgot Password?
+          </button>
+        </div>
+        <Modal
+          title="Reset Password"
+          visible={isForgotPassword}
+          onCancel={() => {
+            setIsForgotPassword(false);
+            setResetStep(1);
+          }}
+          footer={[
+            <Button key="cancel" onClick={() => {
+              setIsForgotPassword(false);
+              setResetStep(1);
+            }}>
+              Cancel
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleForgotPassword}>
+              {resetStep === 1 ? "Send OTP" : resetStep === 2 ? "Verify OTP" : "Reset Password"}
+            </Button>
+          ]}
+        >
+          {resetStep === 1 && (
+            <Input
+              placeholder="Enter your email"
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
+              className="w-full mt-4"
+            />
+          )}
+          {resetStep === 2 && (
+            <Input
+              placeholder="Enter OTP"
+              value={resetOtp}
+              onChange={(e) => setResetOtp(e.target.value)}
+              className="w-full mt-4"
+            />
+          )}
+          {resetStep === 3 && (
+            <Input.Password
+              placeholder="Enter new password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full mt-4"
+            />
+          )}
+        </Modal>
       </div>
     </div>
   );
