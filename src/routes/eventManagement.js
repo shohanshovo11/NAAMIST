@@ -8,6 +8,7 @@ const {
   getPaginatedEvents,
   getLatestEvents
 } = require('../controllers/eventManagementController');
+const { isAdmin } = require('../middleware/validateRole');
 
 // Get all events without pagination
 router.get('/all', getAllEvents);
@@ -22,12 +23,12 @@ router.get('/latest', getLatestEvents);
 router.get('/:id', getEventById);
 
 // Create a new event
-router.post('/', createEvent);
+router.post('/', isAdmin, createEvent);
 
 // Update event by ID
-router.put('/:id', updateEvent);
+router.put('/:id', isAdmin, updateEvent);
 
 // Delete event by ID
-router.delete('/:id', deleteEvent);
+router.delete('/:id', isAdmin, deleteEvent);
 
 module.exports = router;
