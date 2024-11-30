@@ -1,6 +1,7 @@
 import HeroSection from "../Common/HeroSection";
 import erganogram from "../../assets/erganogram.png";
 import { Helmet } from "react-helmet-async";
+import { PhotoView } from "react-photo-view";
 
 const AboutUs = () => {
   return (
@@ -65,7 +66,7 @@ const AboutUs = () => {
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-primary">About MIST</h2>
-          <p className="text-gray-700 mt-4 leading-relaxed">
+          <p className="text-gray-700 mt-4 leading-relaxed text-justify">
             The Military Institute of Science and Technology (MIST) and its
             predecessor institutions are among the most recognized and
             prestigious educational institutions in Bangladesh. MIST has
@@ -81,7 +82,7 @@ const AboutUs = () => {
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-primary">Our Bond</h2>
-          <p className="text-gray-700 mt-4 leading-relaxed">
+          <p className="text-gray-700 mt-4 leading-relaxed text-justify">
             The MIST alumni share a strong common bond through their prior
             association with MIST. A common forum reflecting the MIST tie and
             bond among themselves is both needed and justified. The NAAMIST
@@ -94,14 +95,14 @@ const AboutUs = () => {
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-primary">Our Mission</h2>
-          <p className="text-gray-700 mt-4 leading-relaxed">
+          <p className="text-gray-700 mt-4 leading-relaxed text-justify">
             NAAMIST promotes the interests, welfare, and educational aims of
             MIST and its alumni, establishes and maintains a mutually beneficial
             relationship between the university and its alumni, and encourages
             lifelong engagement of alumni with their fellow alumni and the
             university community.
           </p>
-          <p className="text-gray-700 mt-4 leading-relaxed">
+          <p className="text-gray-700 mt-4 leading-relaxed text-justify">
             NAAMIST also promotes and supports MIST students in the areas of
             research and education, scholarships, and projects/events by
             addressing financial and bureaucratic needs. NAAMIST always
@@ -129,7 +130,7 @@ const AboutUs = () => {
           <h2 className="text-2xl font-semibold text-primary">
             Connect with Us
           </h2>
-          <p className="text-gray-700 mt-4 leading-relaxed">
+          <p className="text-gray-700 mt-4 leading-relaxed text-justify">
             NAAMIST represents the interests of MIST graduates worldwide. We are
             committed to keeping our alumni connected, involved, and maintaining
             long-lasting brotherhood within the alumni community.
@@ -142,7 +143,9 @@ const AboutUs = () => {
 
         <section className="mt-4">
           <div>
-            <img src={erganogram} alt="Erganogram" />
+            <PhotoView src={erganogram}>
+              <img src={erganogram} alt="Erganogram" className="cursor-pointer" />
+            </PhotoView>
           </div>
         </section>
       </div>
