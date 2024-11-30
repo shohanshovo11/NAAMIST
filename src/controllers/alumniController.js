@@ -34,8 +34,12 @@ exports.getAllAlumni = async (req, res) => {
 // Controller function to get all authorized alumni for the alumni page
 exports.getAlumni = async (req, res) => {
   try {
+    let notPublic = null;
+    if(req.user.role === 'alumni' && req.user.isAuthorized || req.user.role === 'admin') {
+      notPublic = 'mobile';
+    }
     const alumni = await Alumni.find({ isAuthorized: true }).select(
-      'name email batch workplace workSectorType designation facebook linkedin profilePic bloodGroup'
+      `name email batch workplace workSectorType designation facebook linkedin profilePic bloodGroup ${notPublic}`
     );
     res.status(200).json(alumni);
   } catch (error) {
@@ -143,10 +147,7 @@ exports.updateAlumni = async (req, res) => {
       return res.status(404).json({ message: 'Alumni not found' });
     }
 
-    if (updateData.password && updateData.password !== 'undefined') {
-      const saltRounds = parseInt(process.env.SALT_ROUNDS);
-      updateData.password = await bcrypt.hash(updateData.password, saltRounds);
-    } else {
+    if (updateData.password === 'undefined' || !updateData.password) {
       updateData.password = existingAlumni.password;
     }
 
