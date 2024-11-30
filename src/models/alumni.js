@@ -33,6 +33,8 @@ const alumniSchema = new mongoose.Schema({
   isAuthorized: { type: Boolean, required: true, default: false },
   role: { type: String, required: true, default: 'alumni' },
   profilePic: { type: String, default: '' },
+  resetPasswordOtp: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 
 // Pre-save hook to hash the password before saving
