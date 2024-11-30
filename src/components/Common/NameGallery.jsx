@@ -1,3 +1,5 @@
+import { PhotoView } from "react-photo-view";
+
 function NameGallery() {
   const alumniImages = [
     "/images/events/2/am_1.jpg",
@@ -16,11 +18,13 @@ function NameGallery() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
         {alumniImages.map((image, index) => (
           <div key={index} className="overflow-hidden rounded-lg shadow-lg">
-            <img
-              src={image}
+            <PhotoView src={image}>
+              <img
+                src={image}
               alt={`Alumni ${index + 1}`}
-              className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
-            />
+                className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300 cursor-pointer"
+              />
+            </PhotoView>
           </div>
         ))}
       </div>
