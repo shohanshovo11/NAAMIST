@@ -5,6 +5,7 @@ import HeroSection from "../Common/HeroSection";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
 import Axios from "../../utils/axios";
 import { message, Spin } from "antd";
+import { PhotoView } from "react-photo-view";
 
 const imgLink = import.meta.env.VITE_IMAGE_URL;
 console.log(imgLink, "kkkj");
@@ -145,17 +146,19 @@ const ProfilePage = () => {
           <div className="max-w-screen-md mx-auto p-6">
             {/* Profile Picture */}
             <div className="flex flex-col items-center mb-8">
-              <img
-                src={
+              <PhotoView src={previewImage ? previewImage : profile.profilePic ? `${imgLink}/${profile.profilePic}` : defaultProfile}>
+                <img
+                  src={
                   previewImage
                     ? previewImage
                     : profile.profilePic
                     ? `${imgLink}/${profile.profilePic}`
                     : defaultProfile
                 }
-                alt="Profile"
-                className="w-56 h-56 rounded-full mb-4 object-cover"
-              />
+                  alt="Profile"
+                  className="w-56 h-56 rounded-full mb-4 object-cover cursor-pointer"
+                />
+              </PhotoView>
               <h1 className="text-3xl font-semibold text-primary">
                 {profile.name}
               </h1>
