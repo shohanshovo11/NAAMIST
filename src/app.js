@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const dbConnect = require('./config/database');
 const apiRoutes = require('./routes/index');
+const { testEmailConfig } = require('./utils/emailConfig');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -51,6 +52,14 @@ try {
 } catch (error) {
   console.error('Database connection error: ', error);
 }
+
+testEmailConfig()
+  .then(() => {
+    console.log('Email configuration test successful');
+  })
+  .catch(error => {
+    console.error('Email configuration test failed:', error);
+  });
 
 app.listen(port, () => {
   console.log(`NAAMIST app listening on port ${port}!`);
