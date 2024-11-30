@@ -5,6 +5,7 @@ const alumniRoute = require('./alumni');
 const adminRoute = require('./admin');
 const eventRoute = require('./eventManagement');
 const announcementRoute = require('./announcement');
+const contactRoutes = require('./contactRoutes');
 
 // const adminController = require('../controllers/adminController');
 
@@ -15,6 +16,7 @@ router.use('/alumni', alumniRoute);
 router.use('/admin', adminRoute);
 router.use('/event', eventRoute);
 router.use('/announcements', announcementRoute);
+router.use('/contact', contactRoutes);
 
 // router.use("/admin", adminController);
 
