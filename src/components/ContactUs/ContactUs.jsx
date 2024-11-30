@@ -1,7 +1,52 @@
 import { Helmet } from "react-helmet-async";
 import HeroSection from "../Common/HeroSection";
+import { message } from 'antd';
+import axios from '../../utils/axios';
+import { useState } from 'react';
 
 const ContactUs = () => {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.post('/contact/submit', formData);
+      console.log(response.data);
+      if (response.data.success) {
+        message.success('Thank you for your message. We will get back to you soon!');
+        // Clear form
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        });
+      }
+    } catch (error) {
+      if(error?.response?.data?.errors?.[0]){
+        message.error(error?.response?.data?.errors?.[0]?.msg);
+        return;
+      }
+      console.error('Contact form error:', error);
+      message.error(error.response?.data?.message || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -56,7 +101,7 @@ const ContactUs = () => {
             <h2 className="text-2xl font-semibold text-primary mb-4">
               Feedback Form
             </h2>
-            <form className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label
                   htmlFor="name"
@@ -68,6 +113,8 @@ const ContactUs = () => {
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Your Name"
                   required
@@ -84,6 +131,8 @@ const ContactUs = () => {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Your Email"
                   required
@@ -100,6 +149,8 @@ const ContactUs = () => {
                   id="message"
                   name="message"
                   rows="5"
+                  value={formData.message}
+                  onChange={handleChange}
                   className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Your Message"
                   required
@@ -107,9 +158,12 @@ const ContactUs = () => {
               </div>
               <button
                 type="submit"
-                className="w-full bg-primary text-white py-2 rounded-md hover:bg-black transition duration-200"
+                disabled={loading}
+                className={`w-full bg-primary text-white py-2 rounded-md hover:bg-black transition duration-200 ${
+                  loading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
               >
-                Send Feedback
+                {loading ? 'Sending...' : 'Send Feedback'}
               </button>
             </form>
           </div>
