@@ -47,7 +47,7 @@ const AnnouncementDetail = () => {
       </p>
 
       {/* Description before the image */}
-      <p className="text-base text-gray-700 mb-4">{announcement.description}</p>
+      <p className="text-base text-gray-700 mb-4 break-words">{announcement.description}</p>
 
       {/* Image last */}
       {announcement.image && (
