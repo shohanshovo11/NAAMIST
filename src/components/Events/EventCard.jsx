@@ -18,7 +18,7 @@ const EventCard = ({
   // Format the date object to a readable string
   const formattedDate = format(new Date(eventDate), "MMMM d, yyyy");
   const handleCardClick = () => {
-    navigate(`/event/${_id}`, { state: { eventContent, cardImage } });
+    navigate(`/event/${_id}`, { state: { eventContent, cardImage, title, eventDate } });
   };
   return (
     <Card

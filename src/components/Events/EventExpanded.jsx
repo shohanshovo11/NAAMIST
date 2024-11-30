@@ -1,11 +1,15 @@
 import { useLocation } from "react-router-dom";
 import HeroSection from "../Common/HeroSection";
+import { useEffect } from "react";
 
 function EventExpanded() {
   const location = useLocation();
   const state = location;
   const eventContent = state?.state?.eventContent || "";
   const imageUrl = state?.state?.imageUrl || "";
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // const eventContent = `
   //   <!-- ####### HEY, I AM THE SOURCE EDITOR! #########-->
   //   <h1 style="color: #5e9ca0;">You can edit <span style="color: #2b2301;">this demo</span> text!</h1>
@@ -135,6 +139,8 @@ function EventExpanded() {
         title={"Event Details"}
       />
       <div className="max-w-screen-lg my-4 p-8 bg-white shadow-lg rounded-md mx-auto">
+        <h1 className="text-3xl px-[15px] font-bold mb-1 text-gray-800">{state?.state?.title}</h1>
+        <p className="text-gray-500 text-sm px-[15px]">Published on: {state?.state?.eventDate.split("T")[0]}</p>
         <div
           className="prose prose-lg ql-editor"
           dangerouslySetInnerHTML={{ __html: eventContent }}

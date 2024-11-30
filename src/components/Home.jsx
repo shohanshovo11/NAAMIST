@@ -39,7 +39,7 @@ function Home() {
 
   const handleLearnMoreClick = (event) => {
     navigate(`/event/${event._id}`, {
-      state: { eventContent: event.eventContent, cardImage: event.cardImage },
+      state: { eventContent: event.eventContent, cardImage: event.cardImage, title: event.title , eventDate: event.eventDate},
     });
   };
 
@@ -53,7 +53,7 @@ function Home() {
         />
         <meta
           name="keywords"
-          content="NAME Alumni, NAME MIST, Alumni Association, Naval Architecture and Marine Engineering, MIST NAME, Alumni Network, Alumni Reunion, Alumni Events, MIST Events"
+          content="NAME Department, MIST NAME, NAME MIST, name mist, mist name, alumni mist, mist alumni, alumni, university alumni, alumni, NAME Alumni, NAME MIST, Alumni Association, Naval Architecture and Marine Engineering, MIST NAME, Alumni Network, Alumni Reunion, Alumni Events, MIST Events"
         />
         <meta
           property="og:title"
