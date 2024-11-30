@@ -10,6 +10,7 @@ const {
   getAlumniByEmail,
   getAlumniById
 } = require('../controllers/alumniController');
+const { isAdmin, isAdminOrAlumni, identifyUser } = require('../middleware/validateRole');
 
 const router = express.Router();
 
@@ -32,7 +33,7 @@ const upload = multer({ storage });
 router.get('/', getAllAlumni);
 
 // Get Alumni for alumni page
-router.get('/get', getAlumni);
+router.get('/get', identifyUser, getAlumni);
 
 // Get Alumni by ID
 router.get('/:id', getAlumniById);
@@ -41,13 +42,13 @@ router.get('/:id', getAlumniById);
 router.get('/getByEmail/:email', getAlumniByEmail);
 
 // Approve Alumni
-router.post('/approve/:id/:alumniType', approveAlumni);
+router.post('/approve/:id/:alumniType', isAdmin, approveAlumni);
 
 // Delete Alumni by id or email
-router.delete('/delete/:id', deleteAlumni);
-router.delete('/deleteByEmail/:email', deleteAlumni);
+router.delete('/delete/:id', isAdmin, deleteAlumni);
+router.delete('/deleteByEmail/:email', isAdmin, deleteAlumni);
 
 // Update Alumni with file upload handling
-router.put('/update/:id', upload.single('profilePic'), updateAlumni); // Use Multer to handle file upload
+router.put('/update/:id', isAdminOrAlumni, upload.single('profilePic'), updateAlumni); // Use Multer to handle file upload
 
 module.exports = router;
