@@ -6,7 +6,7 @@ import executiveMembers from "../../utils/data/committeeMembers";
 import Axios from "../../utils/axios";
 import defaultProfile from "../../assets/default_profile.png";
 import { Helmet } from "react-helmet-async";
-import { PhotoView } from "react-photo-view";
+import { PhotoView, PhotoProvider } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import { IoIosMail, IoMdInformationCircle } from "react-icons/io";
 
@@ -117,22 +117,19 @@ const Filters = ({
 
 // User Card Component
 const UserCard = ({ user }) => {
-  console.log(user, "users");
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
-      <PhotoView
-        src={
-          user?.profilePic ? `${imgUrl}/${user?.profilePic}` : defaultProfile
-        }
-      >
-        <img
-          src={
-            user?.profilePic ? `${imgUrl}/${user?.profilePic}` : defaultProfile
-          } // Use a default image if profilePic is not available
-          alt={user?.name}
-          className="rounded-full h-40 w-40 object-cover mx-auto cursor-pointer"
-        />
-      </PhotoView>
+      <PhotoProvider>
+        <PhotoView
+          src={user?.profilePic ? `${imgUrl}/${user?.profilePic}` : defaultProfile}
+        >
+          <img
+            src={user?.profilePic ? `${imgUrl}/${user?.profilePic}` : defaultProfile}
+            alt={user?.name}
+            className="rounded-full h-40 w-40 object-cover mx-auto cursor-pointer"
+          />
+        </PhotoView>
+      </PhotoProvider>
       <h2 className="mt-4 text-xl font-semibold text-center">{user?.name}</h2>
       {user?.bloodGroup && (
         <p className="text-center text-gray-500">
