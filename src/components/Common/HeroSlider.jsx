@@ -1,31 +1,29 @@
+import { useState, useEffect } from 'react';
+import Axios from '../../utils/axios';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import image from "../../assets/name-day.jpg";
-import { Link } from "react-router-dom";
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
-const heroItems = [
-  {
-    image: image,
-    motto: "Reconnect with your roots",
-    description:
-      "Rediscover memories, reconnect with friends, and reignite your bond with our Alumni community.",
-  },
-  {
-    image: "/images/events/2/am_2.jpg",
-    motto: "Cherish the Legacy",
-    description:
-      "Celebrate the shared journey of excellence and be part of a legacy that continues to inspire future generations.",
-  },
-  {
-    image: "/images/events/3/1.jpg",
-    motto: "Experience Tranquility",
-    description:
-      "Find peace and connect with nature through our serene and beautiful campus environment.",
-  },
-];
+const imgUrl = import.meta.env.VITE_IMAGE_URL;
 
 function HeroSlider() {
+  const user = useAuthUser();
+  const [slides, setSlides] = useState([]);
+  
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const response = await Axios.get('/hero-slider');
+        setSlides(response.data);
+      } catch (error) {
+        console.error('Error fetching slides:', error);
+      }
+    };
+    
+    fetchSlides();
+  }, []);
+
   const settings = {
     infinite: true,
     speed: 500,
@@ -34,15 +32,16 @@ function HeroSlider() {
     arrows: true,
     autoplay: true,
     autoplaySpeed: 3000,
+    pauseOnHover: false,
   };
 
   return (
     <div className="hero-slider w-full overflow-hidden relative">
       <Slider {...settings}>
-        {heroItems.map((item, index) => (
+        {slides.map((item, index) => (
           <div key={index} className="relative">
             <img
-              src={item.image}
+              src={`${imgUrl}/slider/${item.sliderImage}`}
               alt={`Slide ${index + 1}`}
               className="w-full h-[300px] sm:h-[400px] md:h-[calc(100vh-70px)] object-cover"
             />
@@ -50,16 +49,18 @@ function HeroSlider() {
               <div className="container mx-auto px-4 text-white max-w-screen-xl text-left">
                 <div className="text-left w-full md:w-2/3">
                   <h2 className="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-4 font-sans">
-                    {item.motto}
+                    {item.title}
                   </h2>
                   <p className="text-sm sm:text-lg md:text-2xl font-sans font-extralight mb-2 sm:mb-4">
                     {item.description}
                   </p>
-                  <Link to={"/authentication"}>
-                    <button className="bg-secondary text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-lg transition-transform transform hover:scale-105 hover:opacity-90">
-                      Get Connected
-                    </button>
-                  </Link>
+                   {
+                    user && (
+                      <button className="bg-secondary text-white px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-lg transition-transform transform hover:scale-105 hover:opacity-90">
+                        Get Connected
+                      </button>
+                    )
+                  }
                 </div>
               </div>
             </div>

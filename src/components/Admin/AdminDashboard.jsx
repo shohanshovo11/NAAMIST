@@ -4,10 +4,14 @@ import {
   UserOutlined,
   SettingOutlined,
   LogoutOutlined,
+  PictureOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
 import UserManagement from "./UserManagement";
 import EventManagement from "./EventManagement";
 import AnnouncementManagement from "./AnnouncementManagement";
+import HeroSliderManagement from "./HeroSliderManagement";
+import QuoteManagement from "./QuoteManagement";
 import { useNavigate } from "react-router-dom";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
 
@@ -66,6 +70,18 @@ const AdminDashboard = () => {
       label: "Announcements",
       icon: <SettingOutlined />,
       content: <AnnouncementManagement />,
+    },
+    {
+      key: "hero-slider",
+      label: "Hero Slider",
+      icon: <PictureOutlined />,
+      content: <HeroSliderManagement />,
+    },
+    {
+      key: "quotes",
+      label: "Quotes",
+      icon: <MessageOutlined />,
+      content: <QuoteManagement />,
     },
     {
       key: "logout",
