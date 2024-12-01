@@ -173,11 +173,7 @@ const ContactUs = () => {
             <h2 className="text-2xl font-semibold text-primary mb-4">
               Our Location
             </h2>
-            <iframe
-              src="https://www.google.com/maps/d/embed?mid=1MZKGYqnztQJPknILOFjTvwvYoPQ&ehbc=2E312F"
-              width="100%"
-              height="380"
-            ></iframe>
+            <iframe src="https://www.google.com/maps/d/u/8/embed?mid=1wHBlCIA1zxJbNvuwAEEH8XCniZX7yIE&ehbc=2E312F" width="100%" height="380"></iframe>
           </div>
         </div>
       </div>
