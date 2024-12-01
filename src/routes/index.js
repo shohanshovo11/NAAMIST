@@ -6,7 +6,8 @@ const adminRoute = require('./admin');
 const eventRoute = require('./eventManagement');
 const announcementRoute = require('./announcement');
 const contactRoutes = require('./contactRoutes');
-
+const heroSlider = require('./heroSlider');
+const quoteRoute = require('./quote');
 // const adminController = require('../controllers/adminController');
 
 // const alumniController = require('../controllers/alumniController');
@@ -17,7 +18,8 @@ router.use('/admin', adminRoute);
 router.use('/event', eventRoute);
 router.use('/announcements', announcementRoute);
 router.use('/contact', contactRoutes);
-
+router.use('/hero-slider', heroSlider);
+router.use('/quotes', quoteRoute);
 // router.use("/admin", adminController);
 
 // router.use("/alumni", alumniController);
