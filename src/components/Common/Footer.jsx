@@ -54,15 +54,15 @@ function Footer() {
               <br />
               Email:{" "}
               <a
-                href="mailto:info@naamist.org"
+                href="mailto:naamist240@gmail.com"
                 className="hover:text-secondary"
               >
-                info@naamist.org
+                naamist240@gmail.com
               </a>
               <br />
               Phone:{" "}
-              <a href="tel:+8801234567890" className="hover:text-secondary">
-                +880 123 456 7890
+              <a href="tel:+8801676259099" className="hover:text-secondary">
+                +8801676259099
               </a>
             </p>
           </div>

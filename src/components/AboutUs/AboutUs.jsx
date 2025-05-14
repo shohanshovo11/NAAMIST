@@ -86,8 +86,8 @@ const AboutUs = () => {
             The MIST alumni share a strong common bond through their prior
             association with MIST. A common forum reflecting the MIST tie and
             bond among themselves is both needed and justified. The NAAMIST
-            (National Alumni Association of MIST) was formed in 2004 with this
-            in mind. The vision of NAAMIST is to create an engaging and mutually
+            (NAME Alumni Association of MIST) was formed in 2004 with this in
+            mind. The vision of NAAMIST is to create an engaging and mutually
             beneficial lifetime link between the Military Institute of Science
             and Technology and its community of alumni.
           </p>
@@ -116,13 +116,10 @@ const AboutUs = () => {
             Students and Alumni Demographics
           </h2>
           <ul className="text-gray-700 mt-4 list-disc list-inside">
-            <li>
-              2000+ undergraduate students and 300+ postgraduate students from
-              the host country and 57 OIC member states.
-            </li>
-            <li>Over 5500 alumni.</li>
-            <li>2000+ alumni serving across the world.</li>
-            <li>3000+ alumni residing in the host country.</li>
+            <li>100+ undergraduate students.</li>
+            <li>Over 250+ alumni.</li>
+            <li>50+ alumni serving across the world.</li>
+            <li>150+ alumni residing in the host country.</li>
           </ul>
         </section>
 
@@ -144,7 +141,11 @@ const AboutUs = () => {
         <section className="mt-4">
           <div>
             <PhotoView src={erganogram}>
-              <img src={erganogram} alt="Erganogram" className="cursor-pointer" />
+              <img
+                src={erganogram}
+                alt="Erganogram"
+                className="cursor-pointer"
+              />
             </PhotoView>
           </div>
         </section>
